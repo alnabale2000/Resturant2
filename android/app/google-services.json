@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "346555868079",
+    "project_id": "resturant-bfabe",
+    "storage_bucket": "resturant-bfabe.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:346555868079:android:0882840523a8154b38855a",
+        "android_client_info": {
+          "package_name": "com.example.resturant"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "346555868079-3ns5v5o15o8fdhp8oq2m484q9rt0p19m.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCDdLr7_LvxTWWK4sptsuQglvBuCn3C_x0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "346555868079-3ns5v5o15o8fdhp8oq2m484q9rt0p19m.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
