@@ -1,5 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:resturant/models/category.dart';
+import 'package:resturant/models/meal.dart';
+import 'package:resturant/models/order.dart';
 
 class FireStoreService {
   final CollectionReference categories =
@@ -8,39 +11,105 @@ class FireStoreService {
   final CollectionReference categoryMeals =
       FirebaseFirestore.instance.collection('meals');
 
+  final CollectionReference offers =
+      FirebaseFirestore.instance.collection('offers');
+
+  final CollectionReference orders =
+      FirebaseFirestore.instance.collection('orders');
+
+  //  ---------------------------------START ADD SECTION------------------------------------------------
+
   void addCategory(String image, String categoryName) async {
     await categories
         .doc(categoryName)
         .set({'image_url': image, 'category_name': categoryName});
   }
 
-  void addMeal(
-      String image, String mealName, String price, String categoryName) {
-    categories.doc(categoryName).collection('meals').add({
-      'meal_name': mealName,
-      'meal_price': price,
-    });
+  void addMeal({
+    String mealImage,
+    String mealName,
+    double mealPrice,
+    String categoryName,
+    String mealDetails,
+    bool isOffers = false,
+  }) {
+    categories.doc(categoryName).collection('meals').add(
+      {
+        'meal_name': mealName,
+        'meal_price': mealPrice,
+        'meal_details': mealDetails,
+      },
+    );
+    isOffers
+        ? offers.add(
+            {
+              'meal_name': mealName,
+              'meal_price': mealPrice,
+            },
+          )
+        : null;
   }
 
-  // Future<void> getData() async {
-  //   // Get docs from collection reference
-  //   QuerySnapshot querySnapshot = await categories.get();
-  //
-  //   // Get data from docs and convert map to List
-  //   final allData = querySnapshot.docs.map((doc) => doc.data()).toList();
-  //
-  //   return allData;
-  // }
-  Widget buildUserList(
-      BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+  //  ------------------------------------END ADD SECTION---------------------------------------------
+
+  //  ------------------------------------START GET SECTION-------------------------------------------
+
+  /// START GET ORDER
+  List<Order> _orderList(QuerySnapshot snapshot) {
+    return snapshot.docs.map((doc) => Order.fromFireStore(doc)).toList();
+  }
+
+  Stream<List<Order>> get meals {
+    return orders.snapshots().map(_orderList);
+  }
+
+  /// END GET ORDER
+
+  /// START GET category
+  List<Order> _categoryList(QuerySnapshot snapshot) {
+    return snapshot.docs.map((doc) => Order.fromFireStore(doc)).toList();
+  }
+
+  Stream<List<Order>> get category {
+    return orders.snapshots().map(_categoryList);
+  }
+
+  /// END GET category
+
+  /// START GET meal
+  List<Order> _mealList(QuerySnapshot snapshot) {
+    return snapshot.docs.map((doc) => Order.fromFireStore(doc)).toList();
+  }
+
+  Stream<List<Order>> get meal {
+    return orders.snapshots().map(_mealList);
+  }
+
+  /// END GET meal
+  //  ------------------------------------END GET SECTION-------------------------------------------
+
+  Widget buildCategoryList(
+      BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot, W) {
+    int chosen;
+    int _value;
     if (snapshot.hasData) {
       return ListView.builder(
+        physics: NeverScrollableScrollPhysics(),
+        shrinkWrap: true,
         itemCount: snapshot.data.docs.length,
         itemBuilder: (context, index) {
           DocumentSnapshot category = snapshot.data.docs[index];
 
-          return Container(
-            child: Text(category.id),
+          return ListTile(
+            onTap: () {},
+            title: Text(category.id),
+            leading: Radio(
+              value: index,
+              groupValue: _value,
+              onChanged: (val) {
+                chosen = val;
+              },
+            ),
           );
         },
       );
@@ -48,7 +117,7 @@ class FireStoreService {
         !snapshot.hasData) {
       // Handle no data
       return Center(
-        child: Text("No category found."),
+        child: Text("لا يوجد اقسام"),
       );
     } else {
       // Still loading

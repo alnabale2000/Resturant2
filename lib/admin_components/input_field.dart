@@ -7,8 +7,9 @@ class RoundedInputField extends StatelessWidget {
   final ValueChanged<String> onChanged;
   final Function validator;
   final Color color;
-  final bool boolean;
+  final bool isNumber;
   final bool isMultiLine;
+  final Color backGroundColor;
 
   const RoundedInputField({
     Key key,
@@ -17,16 +18,21 @@ class RoundedInputField extends StatelessWidget {
     this.onChanged,
     this.validator,
     this.color,
-    this.boolean,
+    this.backGroundColor,
+    this.isNumber = false,
     this.isMultiLine = false,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return TextFieldContainer(
+      color: backGroundColor,
       child: TextFormField(
-        keyboardType:
-            isMultiLine ? TextInputType.multiline : TextInputType.text,
+        keyboardType: isMultiLine
+            ? TextInputType.multiline
+            : isNumber
+                ? TextInputType.number
+                : TextInputType.text,
         minLines: 1,
         maxLines: 6,
         validator: validator,

@@ -9,20 +9,18 @@ class AdminButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Expanded(
-      child: Padding(
-        padding: const EdgeInsets.fromLTRB(4, 18, 4, 18),
-        child: TextButton(
-          child: Card(
-            color: Colors.green,
-            child: Center(
-              child: Text(
-                text,
-                style: TextStyle(color: Colors.white, fontSize: 20),
-              ),
+      child: GestureDetector(
+        child: Card(
+          elevation: 15,
+          color: Colors.white,
+          child: Center(
+            child: Text(
+              text,
+              style: TextStyle(color: Colors.green, fontSize: 20),
             ),
           ),
-          onPressed: function,
         ),
+        onTap: function,
       ),
     );
   }
