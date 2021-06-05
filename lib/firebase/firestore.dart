@@ -5,22 +5,22 @@ import 'package:resturant/models/meal.dart';
 import 'package:resturant/models/order.dart';
 
 class FireStoreService {
-  final CollectionReference categories =
+  final CollectionReference categoriesCollection =
       FirebaseFirestore.instance.collection('categories');
 
   final CollectionReference categoryMeals =
       FirebaseFirestore.instance.collection('meals');
 
-  final CollectionReference offers =
+  final CollectionReference offersCollection =
       FirebaseFirestore.instance.collection('offers');
 
-  final CollectionReference orders =
+  final CollectionReference ordersCollection =
       FirebaseFirestore.instance.collection('orders');
 
   //  ---------------------------------START ADD SECTION------------------------------------------------
 
   void addCategory(String image, String categoryName) async {
-    await categories
+    await categoriesCollection
         .doc(categoryName)
         .set({'image_url': image, 'category_name': categoryName});
   }
@@ -33,7 +33,7 @@ class FireStoreService {
     String mealDetails,
     bool isOffers = false,
   }) {
-    categories.doc(categoryName).collection('meals').add(
+    categoriesCollection.doc(categoryName).collection('meals').add(
       {
         'meal_name': mealName,
         'meal_price': mealPrice,
@@ -41,7 +41,7 @@ class FireStoreService {
       },
     );
     isOffers
-        ? offers.add(
+        ? offersCollection.add(
             {
               'meal_name': mealName,
               'meal_price': mealPrice,
@@ -59,30 +59,30 @@ class FireStoreService {
     return snapshot.docs.map((doc) => Order.fromFireStore(doc)).toList();
   }
 
-  Stream<List<Order>> get meals {
-    return orders.snapshots().map(_orderList);
+  Stream<List<Order>> get orders {
+    return ordersCollection.snapshots().map(_orderList);
   }
 
   /// END GET ORDER
 
   /// START GET category
-  List<Order> _categoryList(QuerySnapshot snapshot) {
-    return snapshot.docs.map((doc) => Order.fromFireStore(doc)).toList();
+  List<Category> _categoryList(QuerySnapshot snapshot) {
+    return snapshot.docs.map((doc) => Category.fromFireStore(doc)).toList();
   }
 
-  Stream<List<Order>> get category {
-    return orders.snapshots().map(_categoryList);
+  Stream<List<Category>> get category {
+    return ordersCollection.snapshots().map(_categoryList);
   }
 
   /// END GET category
 
   /// START GET meal
-  List<Order> _mealList(QuerySnapshot snapshot) {
-    return snapshot.docs.map((doc) => Order.fromFireStore(doc)).toList();
+  List<Meal> _mealList(QuerySnapshot snapshot) {
+    return snapshot.docs.map((doc) => Meal.fromFireStore(doc)).toList();
   }
 
-  Stream<List<Order>> get meal {
-    return orders.snapshots().map(_mealList);
+  Stream<List<Meal>> get meals {
+    return ordersCollection.snapshots().map(_mealList);
   }
 
   /// END GET meal
@@ -91,7 +91,7 @@ class FireStoreService {
   //  ------------------------------------START DELETE SECTION-------------------------------------------
 
   void deleteAllDocs() {
-    orders.get().then((snaphot) {
+    ordersCollection.get().then((snaphot) {
       for (DocumentSnapshot documentSnapshot in snaphot.docs)
         documentSnapshot.reference.delete();
     });

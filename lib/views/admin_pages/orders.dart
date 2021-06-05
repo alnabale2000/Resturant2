@@ -9,7 +9,7 @@ class Orders extends StatelessWidget {
   Widget build(BuildContext context) {
     return StreamProvider<List<Order>>.value(
       initialData: [],
-      value: FireStoreService().meals,
+      value: FireStoreService().orders,
       child: Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.green,
