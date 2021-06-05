@@ -16,9 +16,10 @@ class Meal {
   factory Meal.fromFireStore(DocumentSnapshot doc) {
     Map data = doc.data();
     return Meal(
-        mealName: data['meal_name'] ?? 'No name',
-        mealDetails: data['meal_details'] ?? 'No details',
-        mealImage: data['meal_image'] ?? 'No image',
-        mealPrice: data['meal_price'] ?? 0);
+      mealName: data['meal_name'] ?? 'No name',
+      mealDetails: data['meal_details'] ?? 'No details',
+      mealImage: data['meal_image'] ?? 'No image',
+      mealPrice: data['meal_price'] ?? 0,
+    );
   }
 }

@@ -88,6 +88,17 @@ class FireStoreService {
   /// END GET meal
   //  ------------------------------------END GET SECTION-------------------------------------------
 
+  //  ------------------------------------START DELETE SECTION-------------------------------------------
+
+  void deleteAllDocs() {
+    orders.get().then((snaphot) {
+      for (DocumentSnapshot documentSnapshot in snaphot.docs)
+        documentSnapshot.reference.delete();
+    });
+  }
+
+  //  ------------------------------------END DELETE SECTION-------------------------------------------
+
   Widget buildCategoryList(
       BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot, W) {
     int chosen;

@@ -20,7 +20,9 @@ class Orders extends StatelessWidget {
                 Icons.replay,
                 color: Colors.white,
               ),
-              onPressed: () {},
+              onPressed: () {
+                FireStoreService().deleteAllDocs();
+              },
             ),
           ],
         ),

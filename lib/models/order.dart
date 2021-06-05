@@ -20,11 +20,12 @@ class Order {
   factory Order.fromFireStore(DocumentSnapshot doc) {
     Map data = doc.data();
     return Order(
-        mealName: data['meal_name'] ?? 'No name',
-        mealImage: data['meal_image'] ?? 'No image',
-        mealPrice: data['meal_price'] ?? 0,
-        userName: data['username'] ?? '',
-        phoneNumber: data['phone_number'] ?? '',
-        mealDateTime: data['order_time']);
+      mealName: data['meal_name'] ?? 'No name',
+      mealImage: data['meal_image'] ?? 'No image',
+      mealPrice: data['meal_price'] ?? 0,
+      userName: data['username'] ?? '',
+      phoneNumber: data['phone_number'] ?? '',
+      mealDateTime: data['order_time'],
+    );
   }
 }

@@ -6,8 +6,12 @@ class OrdersList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final orders = Provider.of<List<Order>>(context);
-    return ListView.builder(
-      itemCount: orders.length,
+    return ListView.separated(
+      separatorBuilder: (BuildContext context, int index) => const Divider(
+        height: 1,
+        color: Colors.green,
+      ),
+      itemCount: orders?.length ?? 0,
       itemBuilder: (context, index) {
         return OrderCard(
           order: orders[index],
@@ -31,14 +35,13 @@ class _OrderCardState extends State<OrderCard> {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
-      child: Container(
-        height: 200,
-        width: 200,
-        child: Column(
-          children: [
-            Text(widget.order.mealName),
-            Text('${widget.order.mealPrice}'),
-          ],
+      child: ListTile(
+        leading: Image.network(
+          'https://i.ytimg.com/vi/IyOc_ksGCMk/maxresdefault.jpg',
+          fit: BoxFit.fill,
+        ),
+        title: Text(
+          widget.order.mealName,
         ),
       ),
     );
