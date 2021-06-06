@@ -33,7 +33,11 @@ class FireStoreService {
     String mealDetails,
     bool isOffers = false,
   }) {
-    categoriesCollection.doc(categoryName).collection('meals').add(
+    categoriesCollection
+        .doc(categoryName)
+        .collection('meals')
+        .doc(mealName)
+        .set(
       {
         'meal_name': mealName,
         'meal_price': mealPrice,
@@ -41,7 +45,7 @@ class FireStoreService {
       },
     );
     isOffers
-        ? offersCollection.add(
+        ? offersCollection.doc(mealName).set(
             {
               'meal_name': mealName,
               'meal_price': mealPrice,
@@ -70,8 +74,8 @@ class FireStoreService {
     return snapshot.docs.map((doc) => Category.fromFireStore(doc)).toList();
   }
 
-  Stream<List<Category>> get category {
-    return ordersCollection.snapshots().map(_categoryList);
+  Stream<List<Category>> get categories {
+    return categoriesCollection.snapshots().map(_categoryList);
   }
 
   /// END GET category
@@ -82,7 +86,7 @@ class FireStoreService {
   }
 
   Stream<List<Meal>> get meals {
-    return ordersCollection.snapshots().map(_mealList);
+    return categoryMeals.snapshots().map(_mealList);
   }
 
   /// END GET meal
@@ -91,10 +95,14 @@ class FireStoreService {
   //  ------------------------------------START DELETE SECTION-------------------------------------------
 
   void deleteAllDocs() {
-    ordersCollection.get().then((snaphot) {
-      for (DocumentSnapshot documentSnapshot in snaphot.docs)
+    ordersCollection.get().then((snapshot) {
+      for (DocumentSnapshot documentSnapshot in snapshot.docs)
         documentSnapshot.reference.delete();
     });
+  }
+
+  void deleteSingleOrderDocument({String mealName}) async {
+    ordersCollection.doc(mealName).delete();
   }
 
   //  ------------------------------------END DELETE SECTION-------------------------------------------

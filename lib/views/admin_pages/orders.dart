@@ -7,7 +7,7 @@ import 'package:resturant/models/order.dart';
 class Orders extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return StreamProvider<List<Order>>.value(
+    return StreamProvider.value(
       initialData: [],
       value: FireStoreService().orders,
       child: Scaffold(

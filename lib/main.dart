@@ -1,6 +1,9 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:resturant/firebase/firestore.dart';
 import 'package:resturant/views/admin_pages/admin_homepage.dart';
+import 'package:resturant/views/user_pages/user_home_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -17,7 +20,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: SafeArea(child: AdminHomePage()),
+      home: SafeArea(child: UserHomePage()),
     );
   }
 }

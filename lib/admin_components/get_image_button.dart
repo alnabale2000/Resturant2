@@ -14,7 +14,7 @@ class GetImageButton extends StatelessWidget {
     return TextButton(
       child: Container(
         height: size.height * 0.3,
-        color: Colors.white,
+        color: Colors.grey[300],
         child: Center(
           child: Icon(
             Icons.add_a_photo_outlined,
