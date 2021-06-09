@@ -5,6 +5,7 @@ import 'package:resturant/views/admin_pages/add_category.dart';
 import 'package:resturant/views/admin_pages/add_meal.dart';
 import 'package:resturant/views/admin_pages/offers.dart';
 import 'package:resturant/views/admin_pages/orders.dart';
+import 'package:resturant/views/user_pages/user_home_page.dart';
 
 class AdminHomePage extends StatelessWidget {
   @override
@@ -13,6 +14,14 @@ class AdminHomePage extends StatelessWidget {
       appBar: AppBar(
         leading: Icon(Icons.arrow_back),
         title: Text('Admin panel'),
+        actions: [
+          IconButton(
+              icon: Icon(Icons.swipe),
+              onPressed: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => UserHomePage()));
+              })
+        ],
         backgroundColor: Colors.green,
       ),
       body: Stack(

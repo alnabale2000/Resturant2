@@ -8,7 +8,6 @@ class Orders extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StreamProvider.value(
-      initialData: [],
       value: FireStoreService().orders,
       child: Scaffold(
         appBar: AppBar(

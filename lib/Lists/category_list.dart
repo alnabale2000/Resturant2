@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:resturant/common_components/loading.dart';
 import 'package:resturant/models/category.dart';
 
 class CategoryList extends StatelessWidget {
@@ -48,7 +49,12 @@ class _CategoryCardState extends State<CategoryCard> {
   @override
   Widget build(BuildContext context) {
     return Column(
-      children: [Text(widget.category.name)],
+      children: [
+        Text(widget.category.name),
+        Image.network(widget.category.image == 'image23'
+            ? 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Image_created_with_a_mobile_phone.png/1200px-Image_created_with_a_mobile_phone.png'
+            : widget.category.image),
+      ],
     );
   }
 }

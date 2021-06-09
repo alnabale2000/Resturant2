@@ -1,13 +1,21 @@
+import 'dart:io' show File;
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:resturant/admin_components/get_image_button.dart';
-import 'package:resturant/admin_components/input_field.dart';
+import 'file:///C:/Users/NTC/AndroidStudioProjects/resturant/lib/common_components/input_field.dart';
 import 'package:resturant/firebase/firestore.dart';
 
 class AddMeal extends StatefulWidget {
   @override
   _AddMealState createState() => _AddMealState();
+
+  final String url;
+  final File file;
+
+  AddMeal({this.url, this.file});
 }
 
 class _AddMealState extends State<AddMeal> {
@@ -24,7 +32,9 @@ class _AddMealState extends State<AddMeal> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    return SafeArea(
+    final String from = 'meal';
+    return Provider<String>(
+      create: (context) => from,
       child: Scaffold(
         appBar: AppBar(
           title: Text('اضف وجبة'),
@@ -34,7 +44,12 @@ class _AddMealState extends State<AddMeal> {
           padding: const EdgeInsets.all(30.0),
           child: ListView(
             children: [
-              GetImageButton(size: size),
+              widget.file != null
+                  ? Image.file(
+                      widget.file,
+                      height: size.height * 0.3,
+                    )
+                  : GetImageButton(size: size),
               SizedBox(
                 height: 20,
               ),
@@ -90,7 +105,7 @@ class _AddMealState extends State<AddMeal> {
               TextButton(
                 onPressed: () {
                   FireStoreService().addMeal(
-                    mealImage: 'meal image',
+                    mealImage: widget.url,
                     mealName: mealName,
                     mealDetails: mealDetails,
                     mealPrice: double.parse(mealPrice),
@@ -100,8 +115,9 @@ class _AddMealState extends State<AddMeal> {
                 },
                 child: Container(
                   decoration: BoxDecoration(
-                      color: Colors.green,
-                      borderRadius: BorderRadius.circular(10)),
+                    color: Colors.green,
+                    borderRadius: BorderRadius.circular(10),
+                  ),
                   height: 50,
                   width: 90,
                   child: Center(

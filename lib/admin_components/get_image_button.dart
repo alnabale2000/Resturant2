@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:resturant/views/admin_pages/image_picker.dart';
 
 class GetImageButton extends StatelessWidget {
-  const GetImageButton({
+  GetImageButton({
     Key key,
     @required this.size,
   }) : super(key: key);
@@ -11,6 +12,7 @@ class GetImageButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final data = Provider.of<String>(context);
     return TextButton(
       child: Container(
         height: size.height * 0.3,
@@ -23,8 +25,8 @@ class GetImageButton extends StatelessWidget {
         ),
       ),
       onPressed: () {
-        Navigator.push(
-            context, MaterialPageRoute(builder: (context) => ImageCapture()));
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => ImageCapture(data)));
       },
     );
   }

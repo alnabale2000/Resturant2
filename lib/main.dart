@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:resturant/firebase/firestore.dart';
 import 'package:resturant/views/admin_pages/admin_homepage.dart';
 import 'package:resturant/views/user_pages/user_home_page.dart';
+import 'package:resturant/wrapper.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -18,9 +19,13 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.green,
+        textTheme: TextTheme(
+          bodyText1: TextStyle(),
+          bodyText2: TextStyle(),
+        ),
       ),
-      home: SafeArea(child: UserHomePage()),
+      home: SafeArea(child: Wrapper()),
     );
   }
 }

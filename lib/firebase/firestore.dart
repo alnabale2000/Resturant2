@@ -17,6 +17,9 @@ class FireStoreService {
   final CollectionReference ordersCollection =
       FirebaseFirestore.instance.collection('orders');
 
+  final CollectionReference usersCollection =
+      FirebaseFirestore.instance.collection('users');
+
   //  ---------------------------------START ADD SECTION------------------------------------------------
 
   void addCategory(String image, String categoryName) async {
@@ -90,7 +93,7 @@ class FireStoreService {
   }
 
   /// END GET meal
-  //  ------------------------------------END GET SECTION-------------------------------------------
+  //  ------------------------------------END GET SECTION------------------------------------------------
 
   //  ------------------------------------START DELETE SECTION-------------------------------------------
 
@@ -107,43 +110,17 @@ class FireStoreService {
 
   //  ------------------------------------END DELETE SECTION-------------------------------------------
 
-  Widget buildCategoryList(
-      BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot, W) {
-    int chosen;
-    int _value;
-    if (snapshot.hasData) {
-      return ListView.builder(
-        physics: NeverScrollableScrollPhysics(),
-        shrinkWrap: true,
-        itemCount: snapshot.data.docs.length,
-        itemBuilder: (context, index) {
-          DocumentSnapshot category = snapshot.data.docs[index];
+  // -------------------------------------START USER SECTION-------------------------------------------
 
-          return ListTile(
-            onTap: () {},
-            title: Text(category.id),
-            leading: Radio(
-              value: index,
-              groupValue: _value,
-              onChanged: (val) {
-                chosen = val;
-              },
-            ),
-          );
-        },
-      );
-    } else if (snapshot.connectionState == ConnectionState.done &&
-        !snapshot.hasData) {
-      // Handle no data
-      return Center(
-        child: Text("لا يوجد اقسام"),
-      );
-    } else {
-      // Still loading
-      return Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Center(child: CircularProgressIndicator()),
-      );
-    }
+  Future upadteUserData(
+    String username,
+    String email,
+    String uid,
+  ) async {
+    return await usersCollection.doc(uid).set({
+      'username': username,
+      'email': email,
+      'admin': 'false',
+    });
   }
 }

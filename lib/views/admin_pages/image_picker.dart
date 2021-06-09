@@ -3,10 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/widgets.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
 import 'package:resturant/views/admin_pages/add_category.dart';
+import 'package:resturant/views/admin_pages/add_meal.dart';
 
 class ImageCapture extends StatefulWidget {
   createState() => _ImageCaptureState();
+  final String from;
+
+  ImageCapture(this.from);
 }
 
 class _ImageCaptureState extends State<ImageCapture> {
@@ -68,7 +73,7 @@ class _ImageCaptureState extends State<ImageCapture> {
               ),
             ),
             SizedBox(height: 10),
-            Uploader(file: _imageFile)
+            Uploader(file: _imageFile, from: widget.from)
           ]
         ],
       ),
@@ -78,8 +83,9 @@ class _ImageCaptureState extends State<ImageCapture> {
 
 class Uploader extends StatefulWidget {
   final File file;
+  final String from;
 
-  Uploader({this.file, Key key}) : super(key: key);
+  Uploader({this.file, this.from, Key key}) : super(key: key);
   @override
   _UploaderState createState() => _UploaderState();
 }
@@ -126,9 +132,12 @@ class _UploaderState extends State<Uploader> {
                 )
               ]),
               child: TextButton.icon(
-                label: Text(
-                  'SAVE',
-                  style: TextStyle(color: Colors.white),
+                label: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
+                    'SAVE',
+                    style: TextStyle(color: Colors.white),
+                  ),
                 ),
                 icon: Icon(
                   Icons.save,
@@ -139,18 +148,18 @@ class _UploaderState extends State<Uploader> {
 
                   TaskSnapshot taskSnapshot = await _uploadTask;
                   url = (await taskSnapshot.ref.getDownloadURL()).toString();
-
                   Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) {
-                        return AddCategory(
-                            // file: widget.file,
-                            // url: url,
-                            );
-                      },
-                    ),
-                  );
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => widget.from == 'category'
+                              ? AddCategory(
+                                  file: widget.file,
+                                  url: url,
+                                )
+                              : AddMeal(
+                                  file: widget.file,
+                                  url: url,
+                                )));
                 },
               ),
             ),
@@ -160,4 +169,11 @@ class _UploaderState extends State<Uploader> {
       );
     }
   }
+}
+
+class PopImage {
+  final File file;
+  final String url;
+
+  PopImage({this.file, this.url});
 }
