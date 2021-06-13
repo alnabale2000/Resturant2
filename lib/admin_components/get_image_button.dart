@@ -6,13 +6,14 @@ class GetImageButton extends StatelessWidget {
   GetImageButton({
     Key key,
     @required this.size,
+    @required this.from,
   }) : super(key: key);
 
   final Size size;
+  final String from;
 
   @override
   Widget build(BuildContext context) {
-    final data = Provider.of<String>(context);
     return TextButton(
       child: Container(
         height: size.height * 0.3,
@@ -26,7 +27,7 @@ class GetImageButton extends StatelessWidget {
       ),
       onPressed: () {
         Navigator.push(context,
-            MaterialPageRoute(builder: (context) => ImageCapture(data)));
+            MaterialPageRoute(builder: (context) => ImageCapture(from)));
       },
     );
   }

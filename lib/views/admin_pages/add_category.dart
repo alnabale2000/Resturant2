@@ -13,32 +13,31 @@ class AddCategory extends StatelessWidget {
   final File file;
 
   AddCategory({this.url, this.file});
-
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   String categoryName;
-  final String from = 'category';
 
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    return Provider<String>(
-      create: (context) => from,
-      child: Scaffold(
-        appBar: AppBar(
-          title: Text('اضافة قسم'),
-          backgroundColor: Colors.green,
-        ),
-        body: SafeArea(
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('اضافة قسم'),
+        backgroundColor: Colors.green,
+      ),
+      body: Form(
+        key: _formKey,
+        child: SafeArea(
           child: Padding(
             padding: const EdgeInsets.all(20.0),
             child: Stack(
               clipBehavior: Clip.none,
               children: [
                 ///Start The top small box
-
                 Container(
                   decoration: BoxDecoration(
-                      color: Colors.green,
-                      borderRadius: BorderRadius.circular(20)),
+                    color: Colors.green,
+                    borderRadius: BorderRadius.circular(20),
+                  ),
                 ),
                 Positioned(
                   top: -20,
@@ -70,11 +69,16 @@ class AddCategory extends StatelessWidget {
                                 file,
                                 height: size.height * 0.3,
                               )
-                            : GetImageButton(size: size),
+                            : GetImageButton(
+                                size: size,
+                                from: 'category',
+                              ),
                         SizedBox(
                           height: size.height * 0.05,
                         ),
                         RoundedInputField(
+                          validator: (String val) =>
+                              val.isEmpty ? 'اسم القسم مطلوب' : null,
                           backGroundColor: Colors.white,
                           color: Colors.green,
                           icon: Icons.list_alt,
@@ -91,11 +95,14 @@ class AddCategory extends StatelessWidget {
                           ),
                           child: TextButton(
                             onPressed: () async {
-                              FireStoreService().addCategory(url, categoryName);
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => AddMeal()));
+                              if (_formKey.currentState.validate()) {
+                                FireStoreService()
+                                    .addCategory(url, categoryName);
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => AddMeal()));
+                              }
                             },
                             child: Text(
                               'اضافة',

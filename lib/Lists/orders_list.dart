@@ -56,49 +56,123 @@ class _OrderCardState extends State<OrderCard> {
               .deleteSingleOrderDocument(mealName: _order.mealName);
         });
       },
-      child: Container(
-        color: Colors.grey[200],
-        width: double.infinity,
-        height: size.height * 0.275,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Stack(
-              children: [
-                Container(
-                  width: size.width * 0.45,
-                  height: size.height * 0.275,
-                  child: Image.network(
-                    'https://i.ytimg.com/vi/IyOc_ksGCMk/maxresdefault.jpg',
-                    fit: BoxFit.fitHeight,
-                  ),
-                ),
-                Positioned(
-                  bottom: 0,
-                  child: Container(
-                    height: 30,
-                    width: size.width * 0.45,
-                    color: Colors.black.withOpacity(0.45),
-                    child: Center(
-                      child: Text(
-                        _order.mealName,
-                        style: TextStyle(fontSize: 17.5, color: Colors.white),
-                      ),
-                    ),
-                  ),
-                ),
-              ],
+      child: Column(
+        children: [
+          Card(
+            color: Colors.green,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(25.0),
             ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(_order.userName),
-                Text('0798${_order.phoneNumber}'),
-              ],
-            )
-          ],
-        ),
+            child: Container(
+              //   color: Colors.grey[200],
+              // color: Colors.green,
+              width: double.infinity,
+              height: size.height * 0.350,
+              child: Column(
+                children: [
+                  Row(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(left: 28.0),
+                        child: Text(
+                          _order.userName,
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 22,
+                              fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                      Text(
+                        ": الاسم ",
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 22,
+                            fontWeight: FontWeight.bold),
+                      ),
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(left: 28.0),
+                        child: Text(
+                          "0798${_order.phoneNumber}",
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 22,
+                              fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                      Text(
+                        " :  الرقم ",
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 22,
+                            fontWeight: FontWeight.bold),
+                      ),
+                    ],
+                  ),
+                  Text(
+                    " : الموقع ",
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 22,
+                        fontWeight: FontWeight.bold),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Card(
+                        child: Container(
+                          width: size.width * 0.45,
+                          height: size.height * 0.130,
+                          child: Image.network(
+                            'https://i.ytimg.com/vi/IyOc_ksGCMk/maxresdefault.jpg',
+                            fit: BoxFit.fitHeight,
+                          ),
+                        ),
+                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          Container(
+                            height: 30,
+                            width: size.width * 0.45,
+                            // color: Colors.black.withOpacity(0.45),
+                            child: Center(
+                              child: Text(
+                                _order.mealName,
+                                style: TextStyle(
+                                    fontSize: 24.5, color: Colors.white),
+                              ),
+                            ),
+                          ),
+                          Container(
+                            child: Text(
+                              " : العدد",
+                              textAlign: TextAlign.right,
+                              style: TextStyle(
+                                  fontSize: 24.5, color: Colors.white),
+                            ),
+                          ),
+                          Container(
+                            child: Text(
+                              " : الاضافات",
+                              textAlign: TextAlign.right,
+                              style: TextStyle(
+                                  fontSize: 24.5, color: Colors.white),
+                            ),
+                          ),
+                        ],
+                      )
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

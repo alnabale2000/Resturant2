@@ -5,6 +5,10 @@ import 'package:resturant/models/meal.dart';
 import 'package:resturant/models/order.dart';
 
 class FireStoreService {
+  final String catNameFromProvider;
+
+  FireStoreService({this.catNameFromProvider});
+
   final CollectionReference categoriesCollection =
       FirebaseFirestore.instance.collection('categories');
 
@@ -43,6 +47,7 @@ class FireStoreService {
         .set(
       {
         'meal_name': mealName,
+        'meal_image': mealImage,
         'meal_price': mealPrice,
         'meal_details': mealDetails,
       },
@@ -51,7 +56,9 @@ class FireStoreService {
         ? offersCollection.doc(mealName).set(
             {
               'meal_name': mealName,
+              'meal_image': mealImage,
               'meal_price': mealPrice,
+              'meal_details': mealDetails,
             },
           )
         : null;
@@ -89,7 +96,11 @@ class FireStoreService {
   }
 
   Stream<List<Meal>> get meals {
-    return categoryMeals.snapshots().map(_mealList);
+    return categoriesCollection
+        .doc(catNameFromProvider)
+        .collection('meals')
+        .snapshots()
+        .map(_mealList);
   }
 
   /// END GET meal

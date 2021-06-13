@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:resturant/admin_components/home_page_button.dart';
 import 'package:resturant/views/admin_pages/add_category.dart';
 import 'package:resturant/views/admin_pages/add_meal.dart';
@@ -12,7 +13,6 @@ class AdminHomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: Icon(Icons.arrow_back),
         title: Text('Admin panel'),
         actions: [
           IconButton(

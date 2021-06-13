@@ -4,131 +4,133 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:resturant/Lists/category_list.dart';
 import 'package:resturant/admin_components/get_image_button.dart';
+import 'package:resturant/common_components/rounded_button.dart';
 import 'file:///C:/Users/NTC/AndroidStudioProjects/resturant/lib/common_components/input_field.dart';
 import 'package:resturant/firebase/firestore.dart';
+import 'package:resturant/main.dart';
+import 'package:resturant/models/category.dart';
+import 'package:resturant/random_states.dart';
 
-class AddMeal extends StatefulWidget {
-  @override
-  _AddMealState createState() => _AddMealState();
-
+class AddMeal extends StatelessWidget {
   final String url;
   final File file;
 
   AddMeal({this.url, this.file});
-}
 
-class _AddMealState extends State<AddMeal> {
   String mealName;
-
   String mealPrice;
-
   String mealDetails;
-
   String categoryName;
 
   bool isOffer = false;
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    final String from = 'meal';
-    return Provider<String>(
-      create: (context) => from,
-      child: Scaffold(
-        appBar: AppBar(
-          title: Text('اضف وجبة'),
-          backgroundColor: Colors.green,
-        ),
-        body: Padding(
-          padding: const EdgeInsets.all(30.0),
-          child: ListView(
-            children: [
-              widget.file != null
-                  ? Image.file(
-                      widget.file,
-                      height: size.height * 0.3,
-                    )
-                  : GetImageButton(size: size),
-              SizedBox(
-                height: 20,
-              ),
-              RoundedInputField(
-                hintText: 'اسم الوجبة',
-                icon: Icons.fastfood_outlined,
-                color: Colors.green,
-                onChanged: (val) {
-                  mealName = val;
-                },
-              ),
-              RoundedInputField(
-                hintText: 'المكونات',
-                isMultiLine: true,
-                icon: Icons.line_style_sharp,
-                color: Colors.green,
-                onChanged: (val) {
-                  mealDetails = val;
-                },
-              ),
-              RoundedInputField(
-                isNumber: true,
-                hintText: 'السعر',
-                icon: Icons.monetization_on_outlined,
-                color: Colors.green,
-                onChanged: (val) {
-                  mealPrice = val;
-                },
-              ),
-              RoundedInputField(
-                hintText: 'الفئة',
-                icon: (Icons.dynamic_feed),
-                color: Colors.green,
-                onChanged: (val) {
-                  categoryName = val;
-                },
-              ),
-              Padding(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 16, horizontal: 8),
-                child: CheckboxListTile(
-                  title: Text('Click to add to Offer list'),
-                  activeColor: Colors.green,
-                  checkColor: Colors.white,
-                  value: isOffer,
-                  onChanged: (bool value) {
-                    setState(() {
-                      isOffer = value;
-                    });
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('اضف وجبة'),
+        backgroundColor: Colors.green,
+      ),
+      body: Form(
+        key: _formKey,
+        child: Container(
+          child: Padding(
+            padding: const EdgeInsets.all(30.0),
+            child: ListView(
+              children: [
+                file != null
+                    ? Image.file(
+                        file,
+                        height: size.height * 0.3,
+                      )
+                    : GetImageButton(size: size, from: 'meal'),
+                SizedBox(
+                  height: 20,
+                ),
+                RoundedInputField(
+                  validator: (String val) =>
+                      val.isEmpty ? 'ادخل اسم الوجبة' : null,
+                  hintText: 'اسم الوجبة',
+                  icon: Icons.fastfood_outlined,
+                  color: Colors.green,
+                  onChanged: (val) {
+                    mealName = val;
                   },
                 ),
-              ),
-              TextButton(
-                onPressed: () {
-                  FireStoreService().addMeal(
-                    mealImage: widget.url,
-                    mealName: mealName,
-                    mealDetails: mealDetails,
-                    mealPrice: double.parse(mealPrice),
-                    categoryName: categoryName,
-                    isOffers: isOffer,
-                  );
-                },
-                child: Container(
+                RoundedInputField(
+                  hintText: 'المكونات',
+                  validator: (String val) =>
+                      val.isEmpty ? 'ادخل تفاصيل الوجبة' : null,
+                  isMultiLine: true,
+                  icon: Icons.line_style_sharp,
+                  color: Colors.green,
+                  onChanged: (val) {
+                    mealDetails = val;
+                  },
+                ),
+                RoundedInputField(
+                  validator: (String val) =>
+                      val.isEmpty ? 'ادخل سعر الوجبة' : null,
+                  isNumber: true,
+                  hintText: 'السعر',
+                  icon: Icons.monetization_on_outlined,
+                  color: Colors.green,
+                  onChanged: (val) {
+                    mealPrice = val;
+                  },
+                ),
+                Container(
+                  margin: EdgeInsets.symmetric(vertical: 10),
                   decoration: BoxDecoration(
-                    color: Colors.green,
-                    borderRadius: BorderRadius.circular(10),
+                    color: Colors.grey[300],
+                    borderRadius: BorderRadius.circular(25),
                   ),
-                  height: 50,
-                  width: 90,
-                  child: Center(
-                    child: Text(
-                      'add',
-                      style: TextStyle(color: Colors.white),
-                    ),
+                  height: 220,
+                  child: CategoryList(
+                    isGroupButton: true,
                   ),
                 ),
-              ),
-            ],
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 16, horizontal: 8),
+                  child: CheckboxListTile(
+                    title: Text('Click to add to Offer list'),
+                    activeColor: Colors.green,
+                    checkColor: Colors.white,
+                    value: Provider.of<RandomStates>(context).isOffer,
+                    onChanged: (bool value) {
+                      Provider.of<RandomStates>(context, listen: false)
+                          .offerChose(value);
+                    },
+                  ),
+                ),
+                RoundedButton(
+                  text: 'اضافة',
+                  color: Colors.green,
+                  textColor: CupertinoColors.white,
+                  press: () {
+                    if (_formKey.currentState.validate()) {
+                      FireStoreService().addMeal(
+                        mealImage: url,
+                        mealName: mealName,
+                        mealDetails: mealDetails,
+                        mealPrice: double.parse(mealPrice),
+                        categoryName:
+                            Provider.of<RandomStates>(context, listen: false)
+                                .categoryName,
+                        isOffers:
+                            Provider.of<RandomStates>(context, listen: false)
+                                .isOffer,
+                      );
+                    }
+                  },
+                )
+              ],
+            ),
           ),
         ),
       ),

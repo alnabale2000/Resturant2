@@ -1,29 +1,26 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:resturant/common_components/input_field.dart';
 import 'package:resturant/common_components/loading.dart';
 import 'package:resturant/common_components/rounded_button.dart';
 import 'package:resturant/common_components/switcher.dart';
 import 'package:resturant/firebase/auth.dart';
+import 'package:resturant/random_states.dart';
 import 'package:resturant/views/common_pages/log_in.dart';
 import 'package:resturant/views/user_pages/user_home_page.dart';
 
-class SignUp extends StatefulWidget {
-  @override
-  _SignUpState createState() => _SignUpState();
-}
-
-class _SignUpState extends State<SignUp> {
+class SignUp extends StatelessWidget {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   String email;
   String password;
   String username;
-  String error = '';
-  bool loading = false;
 
   @override
   Widget build(BuildContext context) {
+    final randomState = Provider.of<RandomStates>(context);
+
     return SafeArea(
-      child: loading
+      child: randomState.loading
           ? Loading()
           : Scaffold(
               backgroundColor: Colors.white,
@@ -89,14 +86,14 @@ class _SignUpState extends State<SignUp> {
                           },
                         ),
                         Padding(
-                          padding: error == ''
+                          padding: randomState.logError == ''
                               ? const EdgeInsets.all(0)
                               : const EdgeInsets.all(8.0),
                           child: Text(
-                            error ?? '',
+                            randomState.logError ?? '',
                             style: TextStyle(
                               color: Colors.red,
-                              fontSize: error == '' ? 0 : 20,
+                              fontSize: randomState.logError == '' ? 0 : 20,
                             ),
                           ),
                         ),
@@ -105,9 +102,8 @@ class _SignUpState extends State<SignUp> {
                           color: Colors.green,
                           press: () async {
                             if (_formKey.currentState.validate()) {
-                              setState(() {
-                                loading = true;
-                              });
+                              randomState.toggleLoading();
+
                               dynamic result = await Auth().regWithEmailAndPass(
                                   email, password, username);
                               if (result != null) {
@@ -116,10 +112,8 @@ class _SignUpState extends State<SignUp> {
                                     MaterialPageRoute(
                                         builder: (context) => UserHomePage()));
                               } else {
-                                setState(() {
-                                  error = 'ايميل غير صحيح';
-                                  loading = false;
-                                });
+                                randomState.toggleLoading();
+                                randomState.updateLogErrorMassage();
                               }
                             }
                           },

@@ -8,26 +8,23 @@ import 'package:resturant/views/common_pages/sign_up.dart';
 class UserHomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return StreamProvider.value(
-      value: FireStoreService().categories,
-      child: Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.green,
-          title: Text(
-            'Categories',
-          ),
-          actions: [
-            IconButton(
-              icon: Icon(Icons.account_box),
-              onPressed: () {
-                Navigator.push(
-                    context, MaterialPageRoute(builder: (context) => LogIn()));
-              },
-            )
-          ],
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.green,
+        title: Text(
+          'Categories',
         ),
-        body: CategoryList(),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.account_box),
+            onPressed: () {
+              Navigator.push(
+                  context, MaterialPageRoute(builder: (context) => LogIn()));
+            },
+          )
+        ],
       ),
+      body: CategoryList(),
     );
   }
 }
