@@ -1,7 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
 import 'package:resturant/models/category.dart';
 import 'package:resturant/random_states.dart';
 import 'package:resturant/views/user_pages/meals.dart';
@@ -34,7 +34,6 @@ class CategoryList extends StatelessWidget {
               )
             : CategoryCard(
                 category: categories[index],
-                index: index,
               );
       },
     );
@@ -43,9 +42,8 @@ class CategoryList extends StatelessWidget {
 
 class CategoryCard extends StatelessWidget {
   final Category category;
-  final int index;
 
-  CategoryCard({this.category, this.index});
+  CategoryCard({this.category});
 
   @override
   Widget build(BuildContext context) {
@@ -55,7 +53,7 @@ class CategoryCard extends StatelessWidget {
         padding: const EdgeInsets.all(5.0),
         child: Container(
           color: Colors.green,
-          height: size.height * 0.25,
+          height: 20,
           width: size.width * 0.43,
           child: Column(
             children: [
@@ -71,8 +69,8 @@ class CategoryCard extends StatelessWidget {
         ),
       ),
       onTap: () {
-        Navigator.push(
-            context, MaterialPageRoute(builder: (context) => Meals(category.name)));
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => Meals(category.name)));
       },
     );
   }

@@ -12,12 +12,7 @@ class Meals extends StatelessWidget {
   Widget build(BuildContext context) {
     return StreamProvider.value(
       value: FireStoreService(catNameFromProvider: categoryName).meals,
-      child: Scaffold(
-        appBar: AppBar(
-          title: Text('test'),
-        ),
-        body: MealList(),
-      ),
+      child: MealList(),
     );
   }
 }
