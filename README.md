@@ -1,16 +1,34 @@
 # resturant
 
-A new Flutter application.
+Flutter app for Restaurant or Mall,super market..
 
-## Getting Started
 
-This project is a starting point for a Flutter application.
 
-A few resources to get you started if this is your first Flutter project:
+  This app build with flutter and firebase
+  
+  what is the skills used in the app?
+  
+  -Forms with validator
+  
+  -models
+  -fetch data from firebase with provider,thats add flexibility to the app,easy way to edit and develop
+  
+  -Slivers
+  -Provider
+    .ChangeNotiferProvider
+    .StreamProvider
+    .Provider
+  
+  -firebase storage(admin add images)
+  -firebase auth
+  -firebase firestore
+  
+  -good knowladge in making admin pages..to add and delete and controll the app
+  ...
+  
+  
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+
+
+
