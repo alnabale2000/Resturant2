@@ -116,7 +116,7 @@ class FireStoreService {
   }
 
   void deleteSingleOrderDocument({String mealName}) async {
-    ordersCollection.doc(mealName).delete();
+    await ordersCollection.doc(mealName).delete();
   }
 
   //  ------------------------------------END DELETE SECTION-------------------------------------------

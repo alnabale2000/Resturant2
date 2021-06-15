@@ -2,9 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:resturant/common_components/loading.dart';
-import 'package:resturant/firebase/auth.dart';
+import 'file:///C:/Users/NTC/AndroidStudioProjects/resturant/lib/views/user_pages/home_page.dart';
 import 'package:resturant/views/admin_pages/admin_homepage.dart';
-import 'package:resturant/views/common_pages/sign_up.dart';
 import 'package:resturant/views/user_pages/user_home_page.dart';
 
 class Wrapper extends StatefulWidget {
@@ -54,6 +53,6 @@ class _WrapperState extends State<Wrapper> {
         ? Loading()
         : isAdmin == 'true'
             ? AdminHomePage()
-            : UserHomePage();
+            : HomePage();
   }
 }

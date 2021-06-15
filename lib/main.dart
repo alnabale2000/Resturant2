@@ -11,6 +11,7 @@ import 'views/admin_pages/add_meal.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+
   runApp(MyApp());
 }
 
@@ -27,7 +28,7 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         title: 'Flutter Demo',
         theme: ThemeData(
-          primarySwatch: Colors.green,
+          primarySwatch: Colors.orange,
           textTheme: TextTheme(
             bodyText1: TextStyle(),
             bodyText2: TextStyle(),
