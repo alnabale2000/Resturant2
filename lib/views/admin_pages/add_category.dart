@@ -18,13 +18,10 @@ class AddCategory extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print('test2');
     final size = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: Colors.white,
-      // appBar: AppBar(
-      //   title: Text('اضافة قسم'),
-      //   backgroundColor: Colors.green,
-      // ),
       body: Form(
         key: _formKey,
         child: SafeArea(

@@ -41,7 +41,7 @@ class Wrapper extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final randomState = Provider.of<RandomStates>(context);
+    final randomState = Provider.of<RandomStates>(context, listen: false);
     randomState.adminCheck();
     return randomState.loading2
         ? Loading()

@@ -26,6 +26,11 @@ class _UserHomePageState extends State<UserHomePage>
     filledImage();
   }
 
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
   var carsulCounter;
   filledImage() {
     _images.add(
@@ -49,8 +54,9 @@ class _UserHomePageState extends State<UserHomePage>
 
   @override
   Widget build(BuildContext context) {
-    final categories = Provider.of<List<Category>>(context);
-    final randomState = Provider.of<RandomStates>(context);
+    print('test1');
+    final categories = Provider.of<List<Category>>(context, listen: false);
+    final randomState = Provider.of<RandomStates>(context, listen: false);
     randomState.adminCheck();
     List<Tab> tabBarItems = [];
 

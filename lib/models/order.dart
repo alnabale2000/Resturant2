@@ -7,21 +7,23 @@ class Order {
   final String mealImage;
   final String mealDateTime;
   final String mealDetails;
+  final String mealId;
   final double mealPrice;
 
-  Order({
-    this.userName,
-    this.phoneNumber,
-    this.mealName,
-    this.mealPrice,
-    this.mealImage,
-    this.mealDateTime,
-    this.mealDetails,
-  });
+  Order(
+      {this.userName,
+      this.phoneNumber,
+      this.mealName,
+      this.mealPrice,
+      this.mealImage,
+      this.mealDateTime,
+      this.mealDetails,
+      this.mealId});
 
   factory Order.fromFireStore(DocumentSnapshot doc) {
     Map data = doc.data();
     return Order(
+      mealId: doc.id,
       mealImage: data['meal_image'] ?? 'No image',
       mealName: data['meal_name'] ?? 'No name',
       userName: data['username'] ?? 'Unknown',

@@ -29,6 +29,7 @@ class AddMeal extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print('test3');
     final size = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: Colors.white,
@@ -36,104 +37,101 @@ class AddMeal extends StatelessWidget {
       //   title: Text('اضف وجبة'),
       //   backgroundColor: Colors.deepOrange,
       // ),
-      body: SingleChildScrollView(
-        child: Form(
-          key: _formKey,
-          child: Container(
-            child: Padding(
-              padding: const EdgeInsets.all(30.0),
-              child: ListView(
-                shrinkWrap: true,
-                children: [
-                  file != null
-                      ? Image.file(
-                          file,
-                          height: size.height * 0.3,
-                        )
-                      : GetImageButton(size: size, from: 'meal'),
-                  SizedBox(
-                    height: 20,
+      body: Form(
+        key: _formKey,
+        child: Container(
+          child: Padding(
+            padding: const EdgeInsets.all(30.0),
+            child: ListView(
+              children: [
+                file != null
+                    ? Image.file(
+                        file,
+                        height: size.height * 0.3,
+                      )
+                    : GetImageButton(size: size, from: 'meal'),
+                SizedBox(
+                  height: 20,
+                ),
+                RoundedInputField(
+                  validator: (String val) =>
+                      val.isEmpty ? 'ادخل اسم الوجبة' : null,
+                  hintText: 'اسم الوجبة',
+                  icon: Icons.fastfood_outlined,
+                  color: Colors.deepOrange,
+                  onChanged: (val) {
+                    mealName = val;
+                  },
+                ),
+                RoundedInputField(
+                  hintText: 'المكونات',
+                  validator: (String val) =>
+                      val.isEmpty ? 'ادخل تفاصيل الوجبة' : null,
+                  isMultiLine: true,
+                  icon: Icons.line_style_sharp,
+                  color: Colors.deepOrange,
+                  onChanged: (val) {
+                    mealDetails = val;
+                  },
+                ),
+                RoundedInputField(
+                  validator: (String val) =>
+                      val.isEmpty ? 'ادخل سعر الوجبة' : null,
+                  isNumber: true,
+                  hintText: 'السعر',
+                  icon: Icons.monetization_on_outlined,
+                  color: Colors.deepOrange,
+                  onChanged: (val) {
+                    mealPrice = val;
+                  },
+                ),
+                Container(
+                  margin: EdgeInsets.symmetric(vertical: 10),
+                  decoration: BoxDecoration(
+                    color: Colors.grey[300],
+                    borderRadius: BorderRadius.circular(25),
                   ),
-                  RoundedInputField(
-                    validator: (String val) =>
-                        val.isEmpty ? 'ادخل اسم الوجبة' : null,
-                    hintText: 'اسم الوجبة',
-                    icon: Icons.fastfood_outlined,
-                    color: Colors.deepOrange,
-                    onChanged: (val) {
-                      mealName = val;
+                  height: 220,
+                  child: CategoryList(
+                    isGroupButton: true,
+                  ),
+                ),
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 16, horizontal: 8),
+                  child: CheckboxListTile(
+                    title: Text('Click to add to Offer list'),
+                    activeColor: Colors.deepOrange,
+                    checkColor: Colors.white,
+                    value: Provider.of<RandomStates>(context).isOffer,
+                    onChanged: (bool value) {
+                      Provider.of<RandomStates>(context, listen: false)
+                          .offerChose(value);
                     },
                   ),
-                  RoundedInputField(
-                    hintText: 'المكونات',
-                    validator: (String val) =>
-                        val.isEmpty ? 'ادخل تفاصيل الوجبة' : null,
-                    isMultiLine: true,
-                    icon: Icons.line_style_sharp,
-                    color: Colors.deepOrange,
-                    onChanged: (val) {
-                      mealDetails = val;
-                    },
-                  ),
-                  RoundedInputField(
-                    validator: (String val) =>
-                        val.isEmpty ? 'ادخل سعر الوجبة' : null,
-                    isNumber: true,
-                    hintText: 'السعر',
-                    icon: Icons.monetization_on_outlined,
-                    color: Colors.deepOrange,
-                    onChanged: (val) {
-                      mealPrice = val;
-                    },
-                  ),
-                  Container(
-                    margin: EdgeInsets.symmetric(vertical: 10),
-                    decoration: BoxDecoration(
-                      color: Colors.grey[300],
-                      borderRadius: BorderRadius.circular(25),
-                    ),
-                    height: 220,
-                    child: CategoryList(
-                      isGroupButton: true,
-                    ),
-                  ),
-                  Padding(
-                    padding:
-                        const EdgeInsets.symmetric(vertical: 16, horizontal: 8),
-                    child: CheckboxListTile(
-                      title: Text('Click to add to Offer list'),
-                      activeColor: Colors.deepOrange,
-                      checkColor: Colors.white,
-                      value: Provider.of<RandomStates>(context).isOffer,
-                      onChanged: (bool value) {
-                        Provider.of<RandomStates>(context, listen: false)
-                            .offerChose(value);
-                      },
-                    ),
-                  ),
-                  RoundedButton(
-                    text: 'اضافة',
-                    color: Colors.deepOrange,
-                    textColor: CupertinoColors.white,
-                    press: () {
-                      if (_formKey.currentState.validate()) {
-                        FireStoreService().addMeal(
-                          mealImage: url,
-                          mealName: mealName,
-                          mealDetails: mealDetails,
-                          mealPrice: double.parse(mealPrice),
-                          categoryName:
-                              Provider.of<RandomStates>(context, listen: false)
-                                  .categoryName,
-                          isOffers:
-                              Provider.of<RandomStates>(context, listen: false)
-                                  .isOffer,
-                        );
-                      }
-                    },
-                  )
-                ],
-              ),
+                ),
+                RoundedButton(
+                  text: 'اضافة',
+                  color: Colors.deepOrange,
+                  textColor: CupertinoColors.white,
+                  press: () {
+                    if (_formKey.currentState.validate()) {
+                      FireStoreService().addMeal(
+                        mealImage: url,
+                        mealName: mealName,
+                        mealDetails: mealDetails,
+                        mealPrice: double.parse(mealPrice),
+                        categoryName:
+                            Provider.of<RandomStates>(context, listen: false)
+                                .categoryName,
+                        isOffers:
+                            Provider.of<RandomStates>(context, listen: false)
+                                .isOffer,
+                      );
+                    }
+                  },
+                )
+              ],
             ),
           ),
         ),

@@ -1,13 +1,15 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:resturant/models/cart_meal.dart';
 import 'package:resturant/models/category.dart';
 import 'package:resturant/models/meal.dart';
 import 'package:resturant/models/order.dart';
 
 class FireStoreService {
   final String catNameFromProvider;
+  final String userId;
 
-  FireStoreService({this.catNameFromProvider});
+  FireStoreService({this.catNameFromProvider, this.userId});
 
   final CollectionReference categoriesCollection =
       FirebaseFirestore.instance.collection('categories');
@@ -64,6 +66,27 @@ class FireStoreService {
         : null;
   }
 
+  void addToUserCart({
+    String uid,
+    String mealName,
+    double mealPrice,
+    mealDetails,
+    String mealImage,
+    int count,
+    double totalPrice,
+  }) {
+    usersCollection.doc(uid).collection('user_orders').doc(mealName).set({
+      'meal_name': mealName,
+      'meal_price': mealPrice,
+      'meal_details': mealDetails,
+      'meal_image': mealImage,
+      'count': count,
+      'total_price': totalPrice,
+    });
+
+    // ordersCollection.add({'meal_name': mealName,'meal_price':mealPrice,'meal_image':mealImage,''},);
+  }
+
   //  ------------------------------------END ADD SECTION---------------------------------------------
 
   //  ------------------------------------START GET SECTION-------------------------------------------
@@ -103,6 +126,18 @@ class FireStoreService {
         .map(_mealList);
   }
 
+  List<CartMeal> _cartMealList(QuerySnapshot snapshot) {
+    return snapshot.docs.map((doc) => CartMeal.fromFireStore(doc)).toList();
+  }
+
+  Stream<List<CartMeal>> get cartMeals {
+    return usersCollection
+        .doc(userId)
+        .collection('user_orders')
+        .snapshots()
+        .map(_cartMealList);
+  }
+
   /// END GET meal
   //  ------------------------------------END GET SECTION------------------------------------------------
 
@@ -115,8 +150,8 @@ class FireStoreService {
     });
   }
 
-  void deleteSingleOrderDocument({String mealName}) async {
-    await ordersCollection.doc(mealName).delete();
+  void deleteSingleOrderDocument({String orderId}) async {
+    await ordersCollection.doc(orderId).delete();
   }
 
   void deleteSingleMealDocument(

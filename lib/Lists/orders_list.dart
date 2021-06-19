@@ -37,9 +37,10 @@ class _OrderCardState extends State<OrderCard> {
   Widget build(BuildContext context) {
     final _order = widget.order;
     final size = MediaQuery.of(context).size;
+    // print(_order.mealId);
 
     return Dismissible(
-      key: ValueKey<String>(_order.mealName),
+      key: ValueKey<String>(_order.mealId),
       background: Container(
         color: Colors.red,
         child: Row(
@@ -51,9 +52,8 @@ class _OrderCardState extends State<OrderCard> {
         ),
       ),
       onDismissed: (DismissDirection direction) {
-        setState(() async {
-          await FireStoreService()
-              .deleteSingleOrderDocument(mealName: _order.mealName);
+        setState(() {
+          FireStoreService().deleteSingleOrderDocument(orderId: _order.mealId);
         });
       },
       child: Column(

@@ -1,6 +1,9 @@
 import 'package:flip_card/flip_card.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:resturant/firebase/firestore.dart';
 import 'package:resturant/models/meal.dart';
+import 'package:resturant/random_states.dart';
 
 class MealDetails extends StatefulWidget {
   final Meal meal;
@@ -12,21 +15,15 @@ class MealDetails extends StatefulWidget {
 }
 
 class _MealDetailsState extends State<MealDetails> {
-  int numb = 1;
+  int counter = 1;
   // double prices = 0.0;
   // double price;
 
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    //  method();
-  }
   //
   // method() {
   //   setState(() {
-  //     price = widget.meal.mealPrice;
-  //     prices = widget.meal.mealPrice;
+  //     price = _meal.mealPrice;
+  //     prices = _meal.mealPrice;
   //   });
   // }
 
@@ -42,31 +39,36 @@ class _MealDetailsState extends State<MealDetails> {
 
   plus() {
     setState(() {
-      numb = numb + 1;
+      counter = counter + 1;
 
       //    prices = numb * price;
     });
   }
 
   minmize() {
-    if (numb > 0) {
+    if (counter > 0) {
       setState(() {
-        numb = numb - 1;
+        counter = counter - 1;
 
 //        prices = numb * price;
       });
     } else
-      numb = 0;
+      counter = 0;
   }
 
   GlobalKey<FlipCardState> cardKey = GlobalKey<FlipCardState>();
 
   @override
   Widget build(BuildContext context) {
+    final randomState = Provider.of<RandomStates>(context, listen: false);
+    final _meal = widget.meal;
     return Scaffold(
       appBar: AppBar(
+        iconTheme: IconThemeData(color: Colors.deepOrange[400]),
+        backgroundColor: Colors.white,
         title: Text(
-          widget.meal.mealName,
+          _meal.mealName,
+          style: TextStyle(color: Colors.deepOrange[400]),
         ),
       ),
       body: Container(
@@ -78,7 +80,7 @@ class _MealDetailsState extends State<MealDetails> {
               child: Image(
                 fit: BoxFit.fill,
                 image: NetworkImage(
-                  widget.meal.mealImage,
+                  _meal.mealImage,
                 ),
               ),
             ),
@@ -86,9 +88,9 @@ class _MealDetailsState extends State<MealDetails> {
             Center(
               child: Container(
                 child: Text(
-                  widget.meal.mealName,
+                  _meal.mealName,
                   style: TextStyle(
-                      color: Colors.green,
+                      color: Colors.black87,
                       fontSize: 32,
                       fontWeight: FontWeight.bold),
                 ),
@@ -100,28 +102,31 @@ class _MealDetailsState extends State<MealDetails> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Container(
-                      child: Text(
-                    "${(widget.meal.mealPrice * numb).toStringAsFixed(2)} JD",
-                    style: TextStyle(color: Colors.green, fontSize: 22),
-                  )),
                   Text(
-                    " :  السعر  ",
-                    style: TextStyle(fontSize: 22, color: Colors.green),
+                    "   Price : ",
+                    style: TextStyle(fontSize: 22, color: Colors.black87),
+                  ),
+                  Container(
+                    child: Text(
+                      "${(_meal.mealPrice * counter).toStringAsFixed(2)} JD",
+                      style: TextStyle(color: Colors.black87, fontSize: 22),
+                    ),
                   ),
                 ],
               ),
             ),
             Center(
-                child: Container(
-                    child: Text(
-              "التفاصيل",
-              style: TextStyle(
-                  color: Colors.green,
-                  fontSize: 22,
-                  fontWeight: FontWeight.bold),
-            ))),
-
+              child: Container(
+                child: Text(
+                  "التفاصيل",
+                  style: TextStyle(
+                    color: Colors.black54,
+                    fontSize: 22,
+                  ),
+                ),
+              ),
+            ),
+            SizedBox(height: 15),
             Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
@@ -131,16 +136,21 @@ class _MealDetailsState extends State<MealDetails> {
                   child: Container(
                     decoration: BoxDecoration(
                         borderRadius: (BorderRadius.circular(23)),
-                        color: Colors.green),
+                        color: Colors.deepOrange),
                     child: IconButton(
-                        icon: Icon(Icons.add), onPressed: () => plus()),
+                      icon: Icon(
+                        Icons.add,
+                        color: Colors.white,
+                      ),
+                      onPressed: () => plus(),
+                    ),
                   ),
                 ),
                 Padding(
                   padding: const EdgeInsets.only(left: 8.0),
                   child: Container(
                     child: Text(
-                      "$numb",
+                      '$counter',
                       style: TextStyle(color: Colors.deepOrange, fontSize: 22),
                     ),
                   ),
@@ -150,9 +160,13 @@ class _MealDetailsState extends State<MealDetails> {
                   child: Container(
                     decoration: BoxDecoration(
                         borderRadius: (BorderRadius.circular(23)),
-                        color: Colors.green),
+                        color: Colors.deepOrange),
                     child: IconButton(
-                        icon: Icon(Icons.minimize), onPressed: () => minmize()),
+                        icon: Icon(
+                          Icons.minimize,
+                          color: Colors.white,
+                        ),
+                        onPressed: () => minmize()),
                   ),
                 ),
               ],
@@ -185,7 +199,7 @@ class _MealDetailsState extends State<MealDetails> {
             //               //           color: Colors.white,
             //               //           fontSize: 17,
             //               //           fontWeight: FontWeight.bold)),
-            //               //   activeColor: Colors.green,
+            //               //   activeColor: Colors.black87,
             //               // ),
             //
             //             ],
@@ -197,9 +211,9 @@ class _MealDetailsState extends State<MealDetails> {
             //       //   crossAxisAlignment: CrossAxisAlignment.center,
             //       //   mainAxisAlignment: MainAxisAlignment.end,
             //       //   children: [
-            //       //     Container( child: Text("${widget.meal.mealPrice} JD",style: TextStyle(color: Colors.green,fontSize: 22),)),
+            //       //     Container( child: Text("${_meal.mealPrice} JD",style: TextStyle(color: Colors.black87,fontSize: 22),)),
             //       //
-            //       //     Text(" : العدد  ",style: TextStyle(fontSize: 22,color: Colors.green),),
+            //       //     Text(" : العدد  ",style: TextStyle(fontSize: 22,color: Colors.black87),),
             //       //
             //       //   ],
             //       // ),
@@ -217,19 +231,33 @@ class _MealDetailsState extends State<MealDetails> {
           height: 70,
           child: FloatingActionButton(
             onPressed: () {
-              print("تأكيد");
+              FireStoreService().addToUserCart(
+                uid: randomState.getCurrentUser(),
+                mealName: _meal.mealName,
+                mealPrice: _meal.mealPrice,
+                mealDetails: _meal.mealDetails,
+                mealImage: _meal.mealImage,
+                count: counter,
+                totalPrice: _meal.mealPrice * counter,
+              );
               cardKey.currentState.toggleCard();
             },
-            child: Text("تاكيد الطلب"),
+            child: Text(
+              'Add To Cart',
+              style: TextStyle(fontSize: 20),
+            ),
             isExtended: true,
           ),
         ),
         back: Container(
           width: double.infinity,
+          color: Colors.deepOrange[400],
           height: 70,
-          child: FloatingActionButton(
-            child: Text('تمت اضافة الطلب الى السلة'),
-            isExtended: true,
+          child: Center(
+            child: Text(
+              'Added To Cart Successfully',
+              style: TextStyle(fontSize: 20),
+            ),
           ),
         ),
       ),

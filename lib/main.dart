@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:resturant/firebase/firestore.dart';
 import 'package:resturant/random_states.dart';
+import 'package:resturant/views/user_pages/cart_page.dart';
+import 'package:resturant/views/user_pages/home_page.dart';
 import 'package:resturant/wrapper.dart';
 
 void main() async {
@@ -19,8 +21,7 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         StreamProvider.value(value: FireStoreService().categories),
-        // StreamProvider.value(value: FireStoreService().meals),
-        ChangeNotifierProvider(create: (_) => RandomStates())
+        ChangeNotifierProvider(create: (_) => RandomStates()),
       ],
       child: MaterialApp(
         title: 'Flutter Demo',
@@ -31,7 +32,7 @@ class MyApp extends StatelessWidget {
             bodyText2: TextStyle(fontFamily: 'Pacifico'),
           ),
         ),
-        home: SafeArea(child: Wrapper()),
+        home: SafeArea(child: Cart()), //Cart()
       ),
     );
   }
