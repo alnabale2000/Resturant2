@@ -119,6 +119,19 @@ class FireStoreService {
     await ordersCollection.doc(mealName).delete();
   }
 
+  void deleteSingleMealDocument(
+      {String mealName, String collectionName}) async {
+    await categoriesCollection
+        .doc(collectionName)
+        .collection('meals')
+        .doc(mealName)
+        .delete();
+  }
+
+  void deleteSingleCategoryDocument({String categoryName}) async {
+    await categoriesCollection.doc(categoryName).delete();
+  }
+
   //  ------------------------------------END DELETE SECTION-------------------------------------------
 
   // -------------------------------------START USER SECTION-------------------------------------------

@@ -1,12 +1,9 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:resturant/facebook.dart';
 import 'package:resturant/firebase/firestore.dart';
 import 'package:resturant/random_states.dart';
 import 'package:resturant/wrapper.dart';
-
-import 'views/admin_pages/add_meal.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -28,10 +25,10 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         title: 'Flutter Demo',
         theme: ThemeData(
-          primarySwatch: Colors.orange,
+          primarySwatch: Colors.deepOrange,
           textTheme: TextTheme(
-            bodyText1: TextStyle(),
-            bodyText2: TextStyle(),
+            bodyText1: TextStyle(fontFamily: 'Pacifico'),
+            bodyText2: TextStyle(fontFamily: 'Pacifico'),
           ),
         ),
         home: SafeArea(child: Wrapper()),

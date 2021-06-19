@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:resturant/common_components/loading.dart';
+import 'package:resturant/firebase/firestore.dart';
 import 'package:resturant/models/category.dart';
+import 'package:resturant/random_states.dart';
+import 'package:resturant/views/common_pages/log_in.dart';
 import 'file:///C:/Users/NTC/AndroidStudioProjects/resturant/lib/user_components/sliver_header_delegate.dart';
 import 'package:resturant/views/user_pages/meals.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
@@ -23,7 +26,7 @@ class _UserHomePageState extends State<UserHomePage>
     filledImage();
   }
 
-  var CarsulCounter;
+  var carsulCounter;
   filledImage() {
     _images.add(
         "https://www.recipetineats.com/wp-content/uploads/2014/12/Chicken-Shawarma_5.jpg");
@@ -46,40 +49,79 @@ class _UserHomePageState extends State<UserHomePage>
 
   @override
   Widget build(BuildContext context) {
+    final categories = Provider.of<List<Category>>(context);
+    final randomState = Provider.of<RandomStates>(context);
+    randomState.adminCheck();
     List<Tab> tabBarItems = [];
-    final categories = Provider.of<List<Category>>(context, listen: false);
 
     if (categories != null)
       for (Category category in categories) {
         tabBarItems.add(
-          Tab(text: category.name),
+          Tab(
+            text: category.name,
+            icon: randomState.isAdmin == 'true'
+                ? GestureDetector(
+                    child: Icon(Icons.delete),
+                    onTap: () {
+                      FireStoreService().deleteSingleCategoryDocument(
+                          categoryName: category.name);
+                    },
+                  )
+                : null,
+          ),
         );
       }
-
     return categories == null
         ? Loading()
         : DefaultTabController(
             length: categories?.length ?? 0,
             child: Scaffold(
+              backgroundColor: Colors.white,
+              drawer: Drawer(),
               appBar: AppBar(
+                iconTheme: IconThemeData(color: Colors.deepOrange[400]),
+                leading: randomState.isAdmin == 'true'
+                    ? IconButton(
+                        icon: Icon(Icons.arrow_back),
+                        color: Colors.deepOrange,
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                      )
+                    : null,
                 elevation: 2.5,
                 centerTitle: true,
                 title: Text(
                   'Al-tazj',
-                  style: TextStyle(color: Colors.red),
+                  style: TextStyle(
+                    color: Colors.deepOrange[400],
+                    fontFamily: 'Pacifico',
+                  ),
                 ),
                 backgroundColor: Colors.white,
                 actions: [
                   IconButton(
                     icon: Icon(
                       Icons.local_grocery_store,
-                      color: Colors.red,
+                      color: Colors.deepOrange[400],
                     ),
-                    color: Colors.red,
+                    color: Colors.deepOrange[400],
+                    onPressed: () {
+                      // Navigator.push(context, MaterialPageRoute(builder: (context)=>CartPage()));
+                    },
                   ),
+                  IconButton(
+                    icon: Icon(
+                      Icons.account_box_outlined,
+                      color: Colors.deepOrange[400],
+                    ),
+                    onPressed: () {
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) => LogIn()));
+                    },
+                  )
                 ],
               ),
-              backgroundColor: Colors.white,
               body: NestedScrollView(
                 headerSliverBuilder: (context, value) {
                   return [
@@ -97,7 +139,7 @@ class _UserHomePageState extends State<UserHomePage>
                                 itemCount: _images.length,
                                 onIndexChanged: (i) {
                                   setState(() {
-                                    CarsulCounter = i;
+                                    carsulCounter = i;
                                   });
                                 },
                                 itemBuilder:
@@ -125,7 +167,7 @@ class _UserHomePageState extends State<UserHomePage>
                                         child:
                                             //4 ==0
                                             Center(
-                                          child: CarsulCounter == index
+                                          child: carsulCounter == index
                                               ? Container(
                                                   margin: EdgeInsets.all(5),
                                                   width: 15,
@@ -163,7 +205,11 @@ class _UserHomePageState extends State<UserHomePage>
                       delegate: SliverHeaderDelegate(
                         color: Colors.white,
                         tabBar: TabBar(
-                          labelColor: Colors.red,
+                          labelStyle: TextStyle(
+                            fontSize: 20.0,
+                            fontFamily: 'Pacifico',
+                          ), //For Selected tab
+                          labelColor: Colors.deepOrange[400],
                           isScrollable: true,
                           tabs: tabBarItems,
                         ),
@@ -173,7 +219,9 @@ class _UserHomePageState extends State<UserHomePage>
                 },
                 body: TabBarView(
                   children: tabBarItems.map((Tab tab) {
-                    return Meals(tab.text);
+                    return Meals(
+                      categoryName: tab.text,
+                    );
                   }).toList(),
                 ),
               ),

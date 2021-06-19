@@ -21,7 +21,7 @@ class GetImageButton extends StatelessWidget {
         child: Center(
           child: Icon(
             Icons.add_a_photo_outlined,
-            color: Colors.green,
+            color: Colors.deepOrange[400],
           ),
         ),
       ),

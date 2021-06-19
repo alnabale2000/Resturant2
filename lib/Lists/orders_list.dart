@@ -51,8 +51,8 @@ class _OrderCardState extends State<OrderCard> {
         ),
       ),
       onDismissed: (DismissDirection direction) {
-        setState(() {
-          FireStoreService()
+        setState(() async {
+          await FireStoreService()
               .deleteSingleOrderDocument(mealName: _order.mealName);
         });
       },

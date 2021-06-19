@@ -20,7 +20,7 @@ class _HomePageState extends State<HomePage> {
         body: _tabs[_currentIndex],
         bottomNavigationBar: BottomNavigationBar(
           backgroundColor: Colors.white,
-          selectedItemColor: Colors.white,
+          selectedItemColor: Colors.deepOrange[400],
           currentIndex: _currentIndex,
           items: [
             BottomNavigationBarItem(
