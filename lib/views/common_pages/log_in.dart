@@ -8,6 +8,7 @@ import 'package:resturant/firebase/auth.dart';
 import 'package:resturant/random_states.dart';
 import 'package:resturant/views/common_pages/sign_up.dart';
 import 'package:resturant/wrapper.dart';
+import 'package:resturant/globals.dart' as global;
 
 class LogIn extends StatelessWidget {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
@@ -16,6 +17,7 @@ class LogIn extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print('${global.userCheck} IN LOG INNN');
     final randomState = Provider.of<RandomStates>(context);
     return randomState.loading
         ? Loading()
@@ -26,7 +28,7 @@ class LogIn extends StatelessWidget {
               leading: IconButton(
                 icon: Icon(
                   Icons.arrow_back,
-                  color: Colors.green,
+                  color: Colors.deepOrange[400],
                 ),
                 onPressed: () {
                   Navigator.pop(context);
@@ -46,7 +48,7 @@ class LogIn extends StatelessWidget {
                         'LOG IN',
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
-                          color: Colors.green,
+                          color: Colors.deepOrange[400],
                           fontSize: 27.5,
                         ),
                       ),
@@ -56,7 +58,7 @@ class LogIn extends StatelessWidget {
                             val.isEmpty ? 'ادخل بريدك الالكتروني' : null,
                         hintText: 'البريد الالكتروني',
                         icon: Icons.email_outlined,
-                        color: Colors.green,
+                        color: Colors.deepOrange[400],
                         onChanged: (val) {
                           email = val;
                         },
@@ -67,7 +69,7 @@ class LogIn extends StatelessWidget {
                         hintText: 'الرقم السري',
                         isPass: true,
                         icon: Icons.lock_open_outlined,
-                        color: Colors.green,
+                        color: Colors.deepOrange[400],
                         onChanged: (val) {
                           password = val;
                         },
@@ -86,7 +88,7 @@ class LogIn extends StatelessWidget {
                       ),
                       RoundedButton(
                         text: 'CONFIRM',
-                        color: Colors.green,
+                        color: Colors.deepOrange[400],
                         press: () async {
                           if (_formKey.currentState.validate()) {
                             randomState.toggleLoading();

@@ -5,7 +5,7 @@ import 'package:flutter/cupertino.dart';
 class RandomStates extends ChangeNotifier {
   String categoryName;
   String logError = '';
-  String isAdmin = 'false';
+  // String isAdmin = 'false';
 
   bool isOffer = false;
   bool loading = false;
@@ -43,25 +43,30 @@ class RandomStates extends ChangeNotifier {
     final FirebaseAuth _auth = FirebaseAuth.instance;
     String uid;
     final user = _auth.currentUser;
-    if (user != null) logedInUser = user;
 
-    uid = logedInUser.uid;
+    if (user != null) {
+      logedInUser = user;
 
-    return uid;
-  }
+      uid = logedInUser.uid;
 
-  void adminCheck() async {
-    try {
-      final String uid = getCurrentUser();
-      var userData =
-          await FirebaseFirestore.instance.collection('users').doc(uid).get();
-      isAdmin = userData.data()['admin'];
-      loading2 = false;
-      notifyListeners();
-    } catch (e) {
-      print('failed');
-      loading2 = false;
-      notifyListeners();
+      return uid;
     }
+    return 'No User';
   }
+
+  // void adminCheck() async {
+  //   try {
+  //     final String uid = getCurrentUser();
+  //     var userData =
+  //         await FirebaseFirestore.instance.collection('users').doc(uid).get();
+  //     isAdmin = userData.data()['admin'];
+  //     loading2 = false;
+  //     print('adminChick');
+  //     notifyListeners();
+  //   } catch (e) {
+  //     print('failed');
+  //     loading2 = false;
+  //     notifyListeners();
+  //   }
+  // }
 }

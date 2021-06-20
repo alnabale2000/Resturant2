@@ -32,7 +32,7 @@ class MyApp extends StatelessWidget {
             bodyText2: TextStyle(fontFamily: 'Pacifico'),
           ),
         ),
-        home: SafeArea(child: Cart()), //Cart()
+        home: SafeArea(child: Wrapper()), //Cart()
       ),
     );
   }

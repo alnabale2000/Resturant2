@@ -42,6 +42,17 @@ class Auth {
     }
   }
 
+  Future signInAnonymously() async {
+    try {
+      dynamic result = await _auth.signInAnonymously();
+      User user = result.user;
+      return user;
+    } catch (e) {
+      print('NO ANONYMOUS ACCOUNT ');
+      return null;
+    }
+  }
+
   Future signOut() async {
     try {
       return await _auth.signOut();

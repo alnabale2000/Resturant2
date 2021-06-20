@@ -5,6 +5,8 @@ import 'package:resturant/models/cart_meal.dart';
 class CartList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    print('carListe');
+
     final cartMeals = Provider.of<List<CartMeal>>(context);
     return ListView.builder(
       itemCount: cartMeals?.length ?? 0,
@@ -25,14 +27,12 @@ class CartCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     print(cartMeal.mealName);
-    return Container(
-      child: Column(
-        children: [
-          Text(cartMeal.mealName),
-          Text('${cartMeal.mealPrice} JD'),
-          Image.network(cartMeal.mealImage),
-        ],
-      ),
+    return Column(
+      children: [
+        Text(cartMeal.mealName),
+        Text('${cartMeal.mealPrice} JD'),
+        Image.network(cartMeal.mealImage),
+      ],
     );
   }
 }

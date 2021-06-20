@@ -2,7 +2,6 @@ import 'dart:io' show File;
 
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:provider/provider.dart';
 import 'package:resturant/admin_components/get_image_button.dart';
 import 'file:///C:/Users/NTC/AndroidStudioProjects/resturant/lib/common_components/input_field.dart';
 import 'package:resturant/firebase/firestore.dart';
@@ -33,7 +32,7 @@ class AddCategory extends StatelessWidget {
                 ///Start The top small box
                 Container(
                   decoration: BoxDecoration(
-                    color: Colors.green,
+                    color: Colors.deepOrange[400],
                     borderRadius: BorderRadius.circular(20),
                   ),
                 ),
@@ -42,23 +41,21 @@ class AddCategory extends StatelessWidget {
                   left: size.width / 2.5,
                   child: Container(
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(30),
-                      color: Colors.blue,
-                    ),
+                        borderRadius: BorderRadius.circular(30),
+                        color: Colors.orange[200]),
                     height: 50,
                     width: 50,
-                    child: Image.network(
-                      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQcof3pIm8ZLI0NMZKT7T47CuANQmWvSzd8EA&usqp=CAU',
-                      fit: BoxFit.cover,
-                    ),
+                    // child: Image.network(
+                    //   'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQcof3pIm8ZLI0NMZKT7T47CuANQmWvSzd8EA&usqp=CAU',
+                    //   fit: BoxFit.cover,
+                    // ),
                   ),
                 ),
 
                 ///End The top small box
 
                 Padding(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 50, horizontal: 30),
+                  padding: const EdgeInsets.only(top: 50, left: 30, right: 30),
                   child: Center(
                     child: ListView(
                       children: [
@@ -78,7 +75,7 @@ class AddCategory extends StatelessWidget {
                           validator: (String val) =>
                               val.isEmpty ? 'اسم القسم مطلوب' : null,
                           backGroundColor: Colors.white,
-                          color: Colors.green,
+                          color: Colors.deepOrange[400],
                           icon: Icons.list_alt,
                           hintText: 'اسم القسم',
                           onChanged: (val) {
@@ -104,7 +101,7 @@ class AddCategory extends StatelessWidget {
                             },
                             child: Text(
                               'اضافة',
-                              style: TextStyle(color: Colors.green),
+                              style: TextStyle(color: Colors.deepOrange[400]),
                             ),
                           ),
                         )

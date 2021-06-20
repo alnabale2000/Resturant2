@@ -7,14 +7,17 @@ import 'package:resturant/random_states.dart';
 class Cart extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    print('cartPage');
+
     return StreamProvider.value(
       value: FireStoreService(
-              userId: Provider.of<RandomStates>(context).getCurrentUser())
+              userId: Provider.of<RandomStates>(context).getCurrentUser() ??
+                  'No User')
           .cartMeals,
       child: Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.white,
-          elevation: 0,
+          elevation: 0.5,
           automaticallyImplyLeading: true,
         ),
         body: CartList(),

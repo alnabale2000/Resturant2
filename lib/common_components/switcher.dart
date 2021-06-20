@@ -19,14 +19,14 @@ class AlreadyHaveAnAccountCheck extends StatelessWidget {
           Text(
             login ? ' انشئ حساب  ' : ' لديك حساب بالفعل ؟ ',
             style: TextStyle(
-              color: Colors.green,
+              color: Colors.deepOrange[400],
               fontWeight: FontWeight.bold,
               fontSize: 18,
             ),
           ),
           Text(
             login ? ' ليس لديك حساب ؟ ' : ' تسجيل دخول ',
-            style: TextStyle(color: Colors.green, fontSize: 18),
+            style: TextStyle(color: Colors.deepOrange[400], fontSize: 18),
           ),
         ],
       ),

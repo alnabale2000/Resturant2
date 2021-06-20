@@ -8,6 +8,7 @@ import 'package:resturant/firebase/auth.dart';
 import 'package:resturant/random_states.dart';
 import 'package:resturant/views/common_pages/log_in.dart';
 import 'package:resturant/views/user_pages/user_home_page.dart';
+import 'package:resturant/wrapper.dart';
 
 class SignUp extends StatelessWidget {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
@@ -29,7 +30,7 @@ class SignUp extends StatelessWidget {
                 leading: IconButton(
                   icon: Icon(
                     Icons.arrow_back,
-                    color: Colors.green,
+                    color: Colors.deepOrange[400],
                   ),
                   onPressed: () {
                     Navigator.pop(context);
@@ -49,7 +50,7 @@ class SignUp extends StatelessWidget {
                           'Sign Up',
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
-                            color: Colors.green,
+                            color: Colors.deepOrange[400],
                             fontSize: 27.5,
                           ),
                         ),
@@ -59,7 +60,7 @@ class SignUp extends StatelessWidget {
                               val.isEmpty ? 'ادخل اسم المستخدم' : null,
                           hintText: 'اسم المستخدم',
                           icon: Icons.account_box_outlined,
-                          color: Colors.green,
+                          color: Colors.deepOrange[400],
                           onChanged: (val) {
                             username = val;
                           },
@@ -69,7 +70,7 @@ class SignUp extends StatelessWidget {
                               val.isEmpty ? 'ادخل بريدك الالكتروني' : null,
                           hintText: 'البريد الالكتروني',
                           icon: Icons.email_outlined,
-                          color: Colors.green,
+                          color: Colors.deepOrange[400],
                           onChanged: (val) {
                             email = val;
                           },
@@ -80,7 +81,7 @@ class SignUp extends StatelessWidget {
                           hintText: 'الرقم السري',
                           isPass: true,
                           icon: Icons.lock_open_outlined,
-                          color: Colors.green,
+                          color: Colors.deepOrange[400],
                           onChanged: (val) {
                             password = val;
                           },
@@ -99,7 +100,7 @@ class SignUp extends StatelessWidget {
                         ),
                         RoundedButton(
                           text: 'CONFIRM',
-                          color: Colors.green,
+                          color: Colors.deepOrange[400],
                           press: () async {
                             if (_formKey.currentState.validate()) {
                               randomState.toggleLoading();
@@ -110,7 +111,7 @@ class SignUp extends StatelessWidget {
                                 Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (context) => UserHomePage()));
+                                        builder: (context) => Wrapper()));
                               } else {
                                 randomState.toggleLoading();
                                 randomState.updateLogErrorMassage();

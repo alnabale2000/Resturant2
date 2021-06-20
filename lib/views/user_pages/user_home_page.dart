@@ -8,6 +8,7 @@ import 'package:resturant/views/common_pages/log_in.dart';
 import 'file:///C:/Users/NTC/AndroidStudioProjects/resturant/lib/user_components/sliver_header_delegate.dart';
 import 'package:resturant/views/user_pages/meals.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
+import 'package:resturant/globals.dart' as globals;
 
 class UserHomePage extends StatefulWidget {
   @override
@@ -19,45 +20,40 @@ class _UserHomePageState extends State<UserHomePage>
   bool loading = false;
   int i = 0;
   List<String> _images = [];
+  SwiperController _swiperController;
 
   @override
   void initState() {
     super.initState();
     filledImage();
+
+    _swiperController = SwiperController();
+    _swiperController.startAutoplay();
   }
 
   @override
   void dispose() {
     super.dispose();
+    _swiperController.stopAutoplay();
+    _swiperController.dispose();
   }
 
   var carsulCounter;
   filledImage() {
-    _images.add(
-        "https://www.recipetineats.com/wp-content/uploads/2014/12/Chicken-Shawarma_5.jpg");
-    _images.add(
-        "https://amiraspantry.com/wp-content/uploads/2020/11/beef-shawarma-recipe-IG.jpg");
-    _images.add(
-        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTbFh_JMTYBId3X1Xs0PPS5CPR7aNVNpKeTBw&usqp=CAU");
-    _images.add(
-        "https://images.immediate.co.uk/production/volatile/sites/30/2020/08/swedish-meatball-burgers-e01dcfe.jpg?quality=90&webp=true&resize=440,400");
-
-    _images.add(
-        "https://hips.hearstapps.com/hmg-prod/images/190416-chicken-burger-082-1556204252.jpg");
-    _images.add(
-        "https://sifu.unileversolutions.com/image/en-LK/recipe-topvisual/2/1260-709/crispy-fried-chicken-burger-50388014.jpg");
-    _images.add(
-        "https://blog.fitbit.com/wp-content/uploads/2017/03/Beet-Pizza_blog.jpg");
-    _images.add(
-        "https://blog.fitbit.com/wp-content/uploads/2017/03/Beet-Pizza_blog.jpg");
+    _images.add('images/download.jpg');
+    _images.add('images/downloadOne.jpg');
   }
+
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context) {
     print('test1');
-    final categories = Provider.of<List<Category>>(context, listen: false);
-    final randomState = Provider.of<RandomStates>(context, listen: false);
-    randomState.adminCheck();
+    final categories = Provider.of<List<Category>>(context);
+    // final randomState = Provider.of<RandomStates>(context, listen: false);
+    // randomState.adminCheck();
+    print(globals.userCheck);
+
     List<Tab> tabBarItems = [];
 
     if (categories != null)
@@ -65,7 +61,7 @@ class _UserHomePageState extends State<UserHomePage>
         tabBarItems.add(
           Tab(
             text: category.name,
-            icon: randomState.isAdmin == 'true'
+            icon: globals.userCheck == 'true'
                 ? GestureDetector(
                     child: Icon(Icons.delete),
                     onTap: () {
@@ -73,7 +69,7 @@ class _UserHomePageState extends State<UserHomePage>
                           categoryName: category.name);
                     },
                   )
-                : null,
+                : SizedBox(height: 0, width: 0),
           ),
         );
       }
@@ -82,11 +78,12 @@ class _UserHomePageState extends State<UserHomePage>
         : DefaultTabController(
             length: categories?.length ?? 0,
             child: Scaffold(
+              key: _scaffoldKey,
               backgroundColor: Colors.white,
-              drawer: Drawer(),
+              endDrawer: Drawer(),
               appBar: AppBar(
                 iconTheme: IconThemeData(color: Colors.deepOrange[400]),
-                leading: randomState.isAdmin == 'true'
+                leading: globals.userCheck == 'true'
                     ? IconButton(
                         icon: Icon(Icons.arrow_back),
                         color: Colors.deepOrange,
@@ -125,7 +122,12 @@ class _UserHomePageState extends State<UserHomePage>
                       Navigator.push(context,
                           MaterialPageRoute(builder: (context) => LogIn()));
                     },
-                  )
+                  ),
+                  IconButton(
+                      icon: Icon(Icons.menu),
+                      onPressed: () {
+                        _scaffoldKey.currentState.openEndDrawer();
+                      }),
                 ],
               ),
               body: NestedScrollView(
@@ -135,13 +137,13 @@ class _UserHomePageState extends State<UserHomePage>
                       child: SliverGrid.extent(
                         // crossAxisCount: 1,
                         maxCrossAxisExtent: 700,
-
                         childAspectRatio: 2.0,
                         children: <Widget>[
                           Stack(
                             alignment: Alignment.bottomCenter,
                             children: [
                               Swiper(
+                                controller: _swiperController,
                                 itemCount: _images.length,
                                 onIndexChanged: (i) {
                                   setState(() {
@@ -150,11 +152,12 @@ class _UserHomePageState extends State<UserHomePage>
                                 },
                                 itemBuilder:
                                     (BuildContext context, int index) =>
-                                        Image.network(
+                                        Image.asset(
                                   _images[index],
                                   fit: BoxFit.cover,
                                 ),
-                                autoplay: true,
+                                autoplay: false,
+                                loop: false,
                               ),
                               Container(
                                 // color: Colors.green,
@@ -179,20 +182,22 @@ class _UserHomePageState extends State<UserHomePage>
                                                   width: 15,
                                                   height: 15,
                                                   decoration: BoxDecoration(
-                                                      color: Colors.green,
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              100)),
+                                                    color: Colors.green,
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            100),
+                                                  ),
                                                 )
                                               : Container(
                                                   margin: EdgeInsets.all(5),
                                                   width: 12,
                                                   height: 12,
                                                   decoration: BoxDecoration(
-                                                      color: Colors.grey[300],
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              100)),
+                                                    color: Colors.grey[300],
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            100),
+                                                  ),
                                                 ),
                                         ),
                                       ),
