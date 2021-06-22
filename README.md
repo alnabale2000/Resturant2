@@ -37,5 +37,5 @@ Flutter app for Restaurant or Mall,super market..
 
 
 
-![WhatsApp Image 2021-06-21 at 4 15 05 PM](https://user-images.githubusercontent.com/59667749/122904334-e8212080-d358-11eb-8c7d-f70720eb5631.jpeg)
+![WhatsApp Image 2021-06-21 at 4 15 05 PM](https://user-images.githubusercontent.com/59667749/122904334-e8212080-d358-11eb-8c7d-f70720eb5631.jpeg | width :100)
 
