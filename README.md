@@ -35,7 +35,7 @@ Flutter app for Restaurant or Mall,super market..
   
   
 
-![alt text](blob:https://web.whatsapp.com/64401e6b-4ca1-4578-8583-23fd61f92c53)
+![alt text](https://web.whatsapp.com/64401e6b-4ca1-4578-8583-23fd61f92c53)
 
 
 
