@@ -38,6 +38,7 @@ class _AdminHomepageState extends State<AdminHomepage> {
           elevation: 2,
           backgroundColor: Colors.white,
           bottom: TabBar(
+            labelStyle: TextStyle(fontSize: 17),
             isScrollable: true,
             unselectedLabelColor: Colors.deepOrange[400],
             indicatorSize: TabBarIndicatorSize.label,

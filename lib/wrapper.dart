@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:resturant/common_components/loading.dart';
+import 'package:resturant/firebase/firestore.dart';
 import 'package:resturant/random_states.dart';
 import 'file:///C:/Users/NTC/AndroidStudioProjects/resturant/lib/views/user_pages/home_page.dart';
 import 'package:resturant/views/admin_pages/admin_homepage.dart';
@@ -53,6 +54,7 @@ class _WrapperState extends State<Wrapper> {
     super.initState();
     adminCheck();
     createAccount();
+    // FireStoreService().setOfferCollection();
   }
 
   @override

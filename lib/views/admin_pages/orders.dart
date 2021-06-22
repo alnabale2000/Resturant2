@@ -52,7 +52,7 @@ class Orders extends StatelessWidget {
             color: Colors.white,
           ),
           onPressed: () {
-            FireStoreService().deleteAllDocs();
+            FireStoreService().deleteAllAdminOrders();
           },
         ),
       ),

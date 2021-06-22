@@ -26,6 +26,11 @@ class FireStoreService {
   final CollectionReference usersCollection =
       FirebaseFirestore.instance.collection('users');
 
+  ///
+  // void setOfferCollection() {
+  //   categoriesCollection.doc('Offers').update({'category_name': 'Offers'});
+  // }
+  ///
   //  ---------------------------------START ADD SECTION------------------------------------------------
 
   void addCategory(String image, String categoryName) async {
@@ -55,7 +60,11 @@ class FireStoreService {
       },
     );
     isOffers
-        ? offersCollection.doc(mealName).set(
+        ? categoriesCollection
+            .doc('Offers')
+            .collection('meals')
+            .doc(mealName)
+            .set(
             {
               'meal_name': mealName,
               'meal_image': mealImage,
@@ -143,11 +152,30 @@ class FireStoreService {
 
   //  ------------------------------------START DELETE SECTION-------------------------------------------
 
-  void deleteAllDocs() {
-    ordersCollection.get().then((snapshot) {
-      for (DocumentSnapshot documentSnapshot in snapshot.docs)
-        documentSnapshot.reference.delete();
-    });
+  void deleteAllAdminOrders() async {
+    // ordersCollection.get().then((snapshot) {
+    //   for (DocumentSnapshot documentSnapshot in snapshot.docs)
+    //     documentSnapshot.reference.delete();
+    // });
+    dynamic snapshot = await ordersCollection.get();
+    for (DocumentSnapshot documentSnapshot in snapshot.docs)
+      documentSnapshot.reference.delete();
+  }
+
+  void deleteAllCartMeals({String uid}) async {
+    dynamic snapshot =
+        await usersCollection.doc(uid).collection('user_orders').get();
+    for (DocumentSnapshot documentSnapshot in snapshot.docs) {
+      documentSnapshot.reference.delete();
+    }
+  }
+
+  void deleteSingleCartMealDoc({String uid, String mealName}) async {
+    await usersCollection
+        .doc(uid)
+        .collection('user_orders')
+        .doc(mealName)
+        .delete();
   }
 
   void deleteSingleOrderDocument({String orderId}) async {
@@ -161,6 +189,12 @@ class FireStoreService {
         .collection('meals')
         .doc(mealName)
         .delete();
+
+    await categoriesCollection
+        .doc('Offers')
+        .collection('meals')
+        .doc(mealName)
+        .delete();
   }
 
   void deleteSingleCategoryDocument({String categoryName}) async {
@@ -171,7 +205,7 @@ class FireStoreService {
 
   // -------------------------------------START USER SECTION-------------------------------------------
 
-  Future upadteUserData(
+  Future updateUserData(
     String username,
     String email,
     String uid,

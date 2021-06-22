@@ -41,10 +41,15 @@ class AddCategory extends StatelessWidget {
                   left: size.width / 2.5,
                   child: Container(
                     decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(30),
-                        color: Colors.orange[200]),
+                      borderRadius: BorderRadius.circular(30),
+                      color: Colors.greenAccent[400],
+                    ),
                     height: 50,
                     width: 50,
+                    child: Icon(
+                      Icons.adjust_sharp,
+                      color: Colors.deepOrange[400],
+                    ),
                     // child: Image.network(
                     //   'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQcof3pIm8ZLI0NMZKT7T47CuANQmWvSzd8EA&usqp=CAU',
                     //   fit: BoxFit.cover,
@@ -101,7 +106,10 @@ class AddCategory extends StatelessWidget {
                             },
                             child: Text(
                               'اضافة',
-                              style: TextStyle(color: Colors.deepOrange[400]),
+                              style: TextStyle(
+                                  color: Colors.deepOrange[400],
+                                  fontSize: 20,
+                                  fontFamily: 'Pacifico'),
                             ),
                           ),
                         )

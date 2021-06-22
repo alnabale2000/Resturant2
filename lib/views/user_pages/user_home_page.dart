@@ -5,6 +5,7 @@ import 'package:resturant/firebase/firestore.dart';
 import 'package:resturant/models/category.dart';
 import 'package:resturant/random_states.dart';
 import 'package:resturant/views/common_pages/log_in.dart';
+import 'cart_page.dart';
 import 'file:///C:/Users/NTC/AndroidStudioProjects/resturant/lib/user_components/sliver_header_delegate.dart';
 import 'package:resturant/views/user_pages/meals.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
@@ -40,8 +41,14 @@ class _UserHomePageState extends State<UserHomePage>
 
   var carsulCounter;
   filledImage() {
-    _images.add('images/download.jpg');
-    _images.add('images/downloadOne.jpg');
+    _images.add('images/food.jpg');
+    _images.add('images/food1.jpg');
+    _images.add('images/food2.jpg');
+    _images.add('images/food3.jpg');
+    _images.add('images/food4.jpg');
+    _images.add('images/food5.jpg');
+    _images.add('images/food6.jpg');
+    _images.add('images/food7.jpg');
   }
 
   final _scaffoldKey = GlobalKey<ScaffoldState>();
@@ -73,6 +80,7 @@ class _UserHomePageState extends State<UserHomePage>
           ),
         );
       }
+
     return categories == null
         ? Loading()
         : DefaultTabController(
@@ -95,9 +103,10 @@ class _UserHomePageState extends State<UserHomePage>
                 elevation: 2.5,
                 centerTitle: true,
                 title: Text(
-                  'Al-tazj',
+                  'Restaurant Name',
                   style: TextStyle(
                     color: Colors.deepOrange[400],
+                    fontSize: 22.5,
                     fontFamily: 'Pacifico',
                   ),
                 ),
@@ -110,19 +119,20 @@ class _UserHomePageState extends State<UserHomePage>
                     ),
                     color: Colors.deepOrange[400],
                     onPressed: () {
-                      // Navigator.push(context, MaterialPageRoute(builder: (context)=>CartPage()));
-                    },
-                  ),
-                  IconButton(
-                    icon: Icon(
-                      Icons.account_box_outlined,
-                      color: Colors.deepOrange[400],
-                    ),
-                    onPressed: () {
                       Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => LogIn()));
+                          MaterialPageRoute(builder: (context) => Cart()));
                     },
                   ),
+                  // IconButton(
+                  //   icon: Icon(
+                  //     Icons.account_box_outlined,
+                  //     color: Colors.deepOrange[400],
+                  //   ),
+                  //   onPressed: () {
+                  //     Navigator.push(context,
+                  //         MaterialPageRoute(builder: (context) => LogIn()));
+                  //   },
+                  // ),
                   IconButton(
                       icon: Icon(Icons.menu),
                       onPressed: () {

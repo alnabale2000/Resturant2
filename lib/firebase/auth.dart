@@ -33,7 +33,7 @@ class Auth {
           email: email, password: pass);
       User user = result.user;
 
-      await FireStoreService().upadteUserData(username, email, user.uid);
+      await FireStoreService().updateUserData(username, email, user.uid);
 
       return _userFromFirebaseUser(user);
     } catch (e) {
