@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:resturant/firebase/firestore.dart';
 import 'package:resturant/models/meal.dart';
 import 'package:resturant/views/user_pages/meal_details.dart';
+import 'package:resturant/globals.dart' as globals;
 
 class MealList extends StatelessWidget {
   @override
@@ -139,7 +140,7 @@ class _MealCardState extends State<MealCard> {
                           ),
                         ),
                         Spacer(),
-                        isAdmin == 'true'
+                        globals.userCheck == 'true'
                             ? IconButton(
                                 icon: Icon(
                                   Icons.delete,

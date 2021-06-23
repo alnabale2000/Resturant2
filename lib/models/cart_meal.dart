@@ -6,7 +6,7 @@ class CartMeal {
   final String mealDetails;
   final double mealPrice;
   final double totalPrice;
-  final int count;
+  int count;
 
   CartMeal(
       {this.mealName,

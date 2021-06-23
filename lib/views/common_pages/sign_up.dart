@@ -26,6 +26,7 @@ class SignUp extends StatelessWidget {
           : Scaffold(
               backgroundColor: Colors.white,
               appBar: AppBar(
+                elevation: 0,
                 backgroundColor: Colors.white,
                 leading: IconButton(
                   icon: Icon(

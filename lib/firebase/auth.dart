@@ -46,14 +46,14 @@ class Auth {
     try {
       dynamic result = await _auth.signInAnonymously();
       User user = result.user;
-      return user;
+      return _userFromFirebaseUser(user);
     } catch (e) {
       print('NO ANONYMOUS ACCOUNT ');
       return null;
     }
   }
 
-  Future signOut() async {
+  Future<void> signOut() async {
     try {
       return await _auth.signOut();
     } catch (e) {

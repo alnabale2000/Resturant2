@@ -96,6 +96,16 @@ class FireStoreService {
     // ordersCollection.add({'meal_name': mealName,'meal_price':mealPrice,'meal_image':mealImage,''},);
   }
 
+  void editCount({String uid, int count, String mealName, double totalPrice}) {
+    if (count >= 1)
+      usersCollection
+          .doc(uid)
+          .collection('user_orders')
+          .doc(mealName)
+          .update({'count': count, 'total_price': totalPrice});
+    else
+      count = 1;
+  }
   //  ------------------------------------END ADD SECTION---------------------------------------------
 
   //  ------------------------------------START GET SECTION-------------------------------------------
@@ -153,10 +163,6 @@ class FireStoreService {
   //  ------------------------------------START DELETE SECTION-------------------------------------------
 
   void deleteAllAdminOrders() async {
-    // ordersCollection.get().then((snapshot) {
-    //   for (DocumentSnapshot documentSnapshot in snapshot.docs)
-    //     documentSnapshot.reference.delete();
-    // });
     dynamic snapshot = await ordersCollection.get();
     for (DocumentSnapshot documentSnapshot in snapshot.docs)
       documentSnapshot.reference.delete();

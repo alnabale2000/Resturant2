@@ -4,6 +4,7 @@ import 'package:resturant/common_components/loading.dart';
 import 'package:resturant/firebase/firestore.dart';
 import 'package:resturant/models/category.dart';
 import 'package:resturant/random_states.dart';
+import 'package:resturant/user_components/home_page_drawer.dart';
 import 'package:resturant/views/common_pages/log_in.dart';
 import 'cart_page.dart';
 import 'file:///C:/Users/NTC/AndroidStudioProjects/resturant/lib/user_components/sliver_header_delegate.dart';
@@ -55,11 +56,9 @@ class _UserHomePageState extends State<UserHomePage>
 
   @override
   Widget build(BuildContext context) {
-    print('test1');
     final categories = Provider.of<List<Category>>(context);
     // final randomState = Provider.of<RandomStates>(context, listen: false);
     // randomState.adminCheck();
-    print(globals.userCheck);
 
     List<Tab> tabBarItems = [];
 
@@ -88,7 +87,7 @@ class _UserHomePageState extends State<UserHomePage>
             child: Scaffold(
               key: _scaffoldKey,
               backgroundColor: Colors.white,
-              endDrawer: Drawer(),
+              endDrawer: UserHomePageDrawer(),
               appBar: AppBar(
                 iconTheme: IconThemeData(color: Colors.deepOrange[400]),
                 leading: globals.userCheck == 'true'

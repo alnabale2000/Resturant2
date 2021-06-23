@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:resturant/Lists/cart_list.dart';
 import 'package:resturant/firebase/firestore.dart';
+import 'package:resturant/models/cart_meal.dart';
 import 'package:resturant/random_states.dart';
+import 'package:resturant/globals.dart' as globals;
 
 class Cart extends StatelessWidget {
   @override
@@ -13,15 +15,17 @@ class Cart extends StatelessWidget {
       child: Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
-          leading: IconButton(
-            icon: Icon(
-              Icons.arrow_back,
-              color: Colors.deepOrange[400],
-            ),
-            onPressed: () {
-              Navigator.pop(context);
-            },
-          ),
+          leading: globals.userCheck == 'true'
+              ? IconButton(
+                  icon: Icon(
+                    Icons.arrow_back,
+                    color: Colors.deepOrange[400],
+                  ),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                )
+              : null,
           title: Text(
             'Cart Items',
             style: TextStyle(color: Colors.deepOrange),
@@ -44,25 +48,50 @@ class Cart extends StatelessWidget {
           automaticallyImplyLeading: true,
         ),
         body: CartList(),
-        floatingActionButton: Container(
-          width: 300,
-          height: 70,
-          child: Padding(
-            padding: const EdgeInsets.only(right: 58.0),
-            child: FloatingActionButton(
-              onPressed: () {
-                print("Confirm Order");
-              },
-              child: Text(
-                "Confirm Order ",
-                style: TextStyle(fontSize: 22),
-              ),
-              isExtended: true,
-            ),
-          ),
-        ),
+        floatingActionButton: CartFloatingButton(),
       ),
     );
+  }
+}
+
+class CartFloatingButton extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    double totalCartPrice = 0;
+    final cartMeals = Provider.of<List<CartMeal>>(context);
+    if (cartMeals != null)
+      for (CartMeal cartMeal in cartMeals) {
+        totalCartPrice += cartMeal.totalPrice;
+      }
+    print(totalCartPrice);
+
+    return cartMeals == null
+        ? Container()
+        : cartMeals.isEmpty
+            ? Container()
+            : Container(
+                width: 400,
+                height: 70,
+                child: Padding(
+                  padding: const EdgeInsets.only(right: 20.0, left: 45),
+                  child: FloatingActionButton(
+                    onPressed: () {
+                      print("Confirm Order");
+                    },
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          "Confirm Order ",
+                          style: TextStyle(fontSize: 22),
+                        ),
+                        Text('${totalCartPrice.toStringAsFixed(2)}'),
+                      ],
+                    ),
+                    isExtended: true,
+                  ),
+                ),
+              );
   }
 }
 

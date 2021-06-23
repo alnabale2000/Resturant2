@@ -4,6 +4,7 @@ import 'package:resturant/common_components/loading.dart';
 import 'package:resturant/firebase/firestore.dart';
 import 'package:resturant/models/cart_meal.dart';
 
+import '../constant.dart';
 import '../random_states.dart';
 
 class CartList extends StatelessWidget {
@@ -44,52 +45,15 @@ class CartList extends StatelessWidget {
   }
 }
 
-class CartCard extends StatefulWidget {
+class CartCard extends StatelessWidget {
   final CartMeal cartMeal;
 
   CartCard({this.cartMeal});
 
   @override
-  _CartCardState createState() => _CartCardState();
-}
-
-class _CartCardState extends State<CartCard> {
-  int numb;
-  @override
-  void initState() {
-    super.initState();
-    fillInteger();
-  }
-
-  fillInteger() {
-    numb = widget.cartMeal.count;
-  }
-
-  plus(int index) {
-    setState(() {
-      numb = index + 1;
-
-      //    prices = numb * price;
-    });
-  }
-
-  minmize(int index) {
-    if (index > 1) {
-      setState(() {
-        numb = index - 1;
-
-//        prices = numb * price;
-      });
-    } else
-      numb = 1;
-  }
-
-  TextStyle Style1 =
-      TextStyle(color: Colors.red, fontSize: 15, fontWeight: FontWeight.bold);
-
-  @override
   Widget build(BuildContext context) {
-    String uid = Provider.of<RandomStates>(context).getCurrentUser();
+    String uid =
+        Provider.of<RandomStates>(context, listen: false).getCurrentUser();
     print('CART CARD TEST');
 
     return Container(
@@ -120,15 +84,15 @@ class _CartCardState extends State<CartCard> {
                                     width: 100,
                                     child: CircleAvatar(
                                       radius: 20,
-                                      backgroundImage: NetworkImage(
-                                          widget.cartMeal.mealImage),
+                                      backgroundImage:
+                                          NetworkImage(cartMeal.mealImage),
                                     ),
                                   ),
                                   Column(
                                     children: [
                                       Container(
                                         child: Text(
-                                          widget.cartMeal.mealName,
+                                          cartMeal.mealName,
                                           style: TextStyle(
                                               color: Colors.red,
                                               fontSize: 22.5,
@@ -139,8 +103,8 @@ class _CartCardState extends State<CartCard> {
                                         padding: const EdgeInsets.only(
                                             right: 50, left: 0.0, top: 12),
                                         child: Text(
-                                          '${(widget.cartMeal.mealPrice * numb).toStringAsFixed(2)} JD',
-                                          style: Style1,
+                                          '${(cartMeal.mealPrice * cartMeal.count).toStringAsFixed(2)} JD',
+                                          style: style1,
                                         ),
                                       ),
                                     ],
@@ -159,8 +123,7 @@ class _CartCardState extends State<CartCard> {
                                             print("Cancel");
                                             FireStoreService()
                                                 .deleteSingleCartMealDoc(
-                                                    mealName: widget
-                                                        .cartMeal.mealName,
+                                                    mealName: cartMeal.mealName,
                                                     uid: uid);
                                           }),
                                     ),
@@ -191,7 +154,13 @@ class _CartCardState extends State<CartCard> {
                                       child: IconButton(
                                           icon: Icon(Icons.add),
                                           onPressed: () {
-                                            plus(numb);
+                                            FireStoreService().editCount(
+                                              uid: uid,
+                                              count: cartMeal.count + 1,
+                                              mealName: cartMeal.mealName,
+                                              totalPrice: (cartMeal.count + 1) *
+                                                  cartMeal.mealPrice,
+                                            );
                                           }),
                                     ),
                                     Positioned(
@@ -208,12 +177,12 @@ class _CartCardState extends State<CartCard> {
                                         child: Center(
                                             child: num == null
                                                 ? Text(
-                                                    "${widget.cartMeal.count}",
-                                                    style: Style1,
+                                                    "${cartMeal.count}",
+                                                    style: style1,
                                                   )
                                                 : Text(
-                                                    "$numb",
-                                                    style: Style1,
+                                                    "${cartMeal.count}",
+                                                    style: style1,
                                                   )),
                                       ),
                                     ),
@@ -223,48 +192,16 @@ class _CartCardState extends State<CartCard> {
                                       bottom: 1,
                                       child: IconButton(
                                           icon: Icon(Icons.minimize),
-                                          onPressed: () => minmize(numb)),
+                                          onPressed: () {
+                                            FireStoreService().editCount(
+                                              uid: uid,
+                                              count: cartMeal.count - 1,
+                                              mealName: cartMeal.mealName,
+                                              totalPrice: (cartMeal.count - 1) *
+                                                  cartMeal.mealPrice,
+                                            );
+                                          }),
                                     ),
-// Positioned(
-//   width: 120,
-//
-//   child:   Row(
-//     children: [
-//       Container(
-//         width: 32,
-//         child: IconButton(
-//                   icon: Icon(Icons.add),
-//                   onPressed: () {
-//                     plus(widget.cartMeal.count);
-//                   }),
-//       ),
-//
-//   Padding(
-//     padding: const EdgeInsets.only(bottom:8.0,),
-//     child: Container(
-//
-//       margin: EdgeInsets.only(left: 3),
-//           height:37,width: 25,
-//
-//           decoration: BoxDecoration(
-//            color: Colors.white, borderRadius: BorderRadius.circular(22)
-//
-//           ),
-//           child: Center(child: Text("${widget.cartMeal.count}",style: Style1,)),
-//         ),
-//   ),
-//   Container(
-//     // margin: EdgeInsets.only(bottom: 3),//
-//     child: IconButton(
-//             icon: Icon(Icons.minimize),
-//             onPressed: (){
-//               print("Minimize");
-//         }),
-//   ),
-//
-//     ],
-//   ),
-// )
                                   ],
                                 ),
                               ),
@@ -410,3 +347,43 @@ class _CartCardState extends State<CartCard> {
 //     );
 //   }
 // }
+// Positioned(
+//   width: 120,
+//
+//   child:   Row(
+//     children: [
+//       Container(
+//         width: 32,
+//         child: IconButton(
+//                   icon: Icon(Icons.add),
+//                   onPressed: () {
+//                     plus(cartMeal.count);
+//                   }),
+//       ),
+//
+//   Padding(
+//     padding: const EdgeInsets.only(bottom:8.0,),
+//     child: Container(
+//
+//       margin: EdgeInsets.only(left: 3),
+//           height:37,width: 25,
+//
+//           decoration: BoxDecoration(
+//            color: Colors.white, borderRadius: BorderRadius.circular(22)
+//
+//           ),
+//           child: Center(child: Text("${cartMeal.count}",style: Style1,)),
+//         ),
+//   ),
+//   Container(
+//     // margin: EdgeInsets.only(bottom: 3),//
+//     child: IconButton(
+//             icon: Icon(Icons.minimize),
+//             onPressed: (){
+//               print("Minimize");
+//         }),
+//   ),
+//
+//     ],
+//   ),
+// )

@@ -24,6 +24,7 @@ class LogIn extends StatelessWidget {
         : Scaffold(
             backgroundColor: Colors.white,
             appBar: AppBar(
+              elevation: 0,
               backgroundColor: Colors.white,
               leading: IconButton(
                 icon: Icon(
@@ -43,7 +44,7 @@ class LogIn extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      SizedBox(height: 80),
+                      SizedBox(height: 65),
                       Text(
                         'LOG IN',
                         style: TextStyle(
@@ -119,7 +120,63 @@ class LogIn extends StatelessWidget {
                           );
                         },
                       ),
-                      SizedBox(height: 30)
+                      SizedBox(height: 30),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Container(
+                            height: 1,
+                            width: 140,
+                            color: Colors.deepOrange[300],
+                          ),
+                          Text(
+                            'Or Login with',
+                            style: TextStyle(color: Colors.black87),
+                          ),
+                          Container(
+                            height: 1,
+                            width: 140,
+                            color: Colors.deepOrange[300],
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 27.5),
+                      GestureDetector(
+                        child: Container(
+                          clipBehavior: Clip.antiAlias,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(12),
+                            color: Colors.white,
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black54,
+                                offset: Offset(0, 2.5),
+                                spreadRadius: -2,
+                                blurRadius: 4,
+                              ),
+                            ],
+                          ),
+                          height: 44,
+                          width: 230,
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                Image.network(
+                                  'https://facebookbrand.com/wp-content/uploads/2019/04/f_logo_RGB-Hex-Blue_512.png?w=512&h=512',
+                                  fit: BoxFit.contain,
+                                ),
+                                Text(
+                                  'Login with Facebook',
+                                  style: TextStyle(
+                                      color: Color(0xFF1778F2), fontSize: 17.5),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      )
                     ],
                   ),
                 ),

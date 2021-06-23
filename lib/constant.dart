@@ -9,3 +9,6 @@ const kDismissibleIcon = Padding(
     color: Colors.white,
   ),
 );
+
+TextStyle style1 = const TextStyle(
+    color: Colors.red, fontSize: 15, fontWeight: FontWeight.bold);
