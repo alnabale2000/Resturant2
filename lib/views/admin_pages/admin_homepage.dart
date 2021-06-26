@@ -9,7 +9,15 @@ class AdminHomepage extends StatefulWidget {
   _AdminHomepageState createState() => _AdminHomepageState();
 }
 
-class _AdminHomepageState extends State<AdminHomepage> {
+class _AdminHomepageState extends State<AdminHomepage>
+    with SingleTickerProviderStateMixin {
+  TabController _tabController;
+  @override
+  void initState() {
+    super.initState();
+    _tabController = TabController(length: 3, vsync: this);
+  }
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -38,6 +46,7 @@ class _AdminHomepageState extends State<AdminHomepage> {
           elevation: 2,
           backgroundColor: Colors.white,
           bottom: TabBar(
+            controller: _tabController,
             labelStyle: TextStyle(fontSize: 17),
             isScrollable: true,
             unselectedLabelColor: Colors.deepOrange[400],
@@ -98,8 +107,11 @@ class _AdminHomepageState extends State<AdminHomepage> {
           ),
         ),
         body: TabBarView(
+          controller: _tabController,
           children: [
-            AddCategory(),
+            AddCategory(
+              tabController: _tabController,
+            ),
             AddMeal(),
             Orders(),
           ],

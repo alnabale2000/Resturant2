@@ -7,12 +7,20 @@ import 'file:///C:/Users/NTC/AndroidStudioProjects/resturant/lib/common_componen
 import 'package:resturant/firebase/firestore.dart';
 import 'package:resturant/views/admin_pages/add_meal.dart';
 
-class AddCategory extends StatelessWidget {
+class AddCategory extends StatefulWidget {
   final String url;
   final File file;
+  final TabController tabController;
 
-  AddCategory({this.url, this.file});
+  AddCategory({this.url, this.file, this.tabController});
+
+  @override
+  _AddCategoryState createState() => _AddCategoryState();
+}
+
+class _AddCategoryState extends State<AddCategory> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
   String categoryName;
 
   @override
@@ -64,9 +72,9 @@ class AddCategory extends StatelessWidget {
                   child: Center(
                     child: ListView(
                       children: [
-                        file != null
+                        widget.file != null
                             ? Image.file(
-                                file,
+                                widget.file,
                                 height: size.height * 0.3,
                               )
                             : GetImageButton(
@@ -97,11 +105,13 @@ class AddCategory extends StatelessWidget {
                             onPressed: () async {
                               if (_formKey.currentState.validate()) {
                                 FireStoreService()
-                                    .addCategory(url, categoryName);
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => AddMeal()));
+                                    .addCategory(widget.url, categoryName);
+                                widget.tabController.animateTo(1);
+
+                                // Navigator.push(
+                                //     context,
+                                //     MaterialPageRoute(
+                                //         builder: (context) => AddMeal()));
                               }
                             },
                             child: Text(

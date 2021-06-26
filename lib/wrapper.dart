@@ -61,7 +61,7 @@ class _WrapperState extends State<Wrapper> {
     // final randomState = Provider.of<RandomStates>(context, listen: false);
     // randomState.adminCheck();
     print('WRAPPER CHECK $isAdmin');
-    print('USER ID IS $uid');
+    print('USER ID IS $logedInUser');
 
     globals.setAdminValue(isAdmin);
     print('WRAPPER CHECK ${globals.userCheck}');

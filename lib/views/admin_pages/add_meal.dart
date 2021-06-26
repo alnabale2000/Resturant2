@@ -12,6 +12,7 @@ import 'package:resturant/firebase/firestore.dart';
 import 'package:resturant/main.dart';
 import 'package:resturant/models/category.dart';
 import 'package:resturant/random_states.dart';
+import 'package:resturant/views/user_pages/home_page.dart';
 
 class AddMeal extends StatelessWidget {
   final String url;
@@ -128,6 +129,8 @@ class AddMeal extends StatelessWidget {
                             Provider.of<RandomStates>(context, listen: false)
                                 .isOffer,
                       );
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) => HomePage()));
                     }
                   },
                 )
