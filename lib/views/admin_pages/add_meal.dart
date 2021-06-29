@@ -44,6 +44,7 @@ class AddMeal extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.all(30.0),
             child: ListView(
+              physics: BouncingScrollPhysics(),
               children: [
                 file != null
                     ? Image.file(
@@ -98,8 +99,7 @@ class AddMeal extends StatelessWidget {
                   ),
                 ),
                 Padding(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 16, horizontal: 8),
+                  padding: const EdgeInsets.only(top: 16, left: 4, right: 4),
                   child: CheckboxListTile(
                     title: Text('Click to add to Offer list'),
                     activeColor: Colors.deepOrange,
@@ -107,7 +107,20 @@ class AddMeal extends StatelessWidget {
                     value: Provider.of<RandomStates>(context).isOffer,
                     onChanged: (bool value) {
                       Provider.of<RandomStates>(context, listen: false)
-                          .offerChose(value);
+                          .offerChoose(value);
+                    },
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 16, left: 4, right: 4),
+                  child: CheckboxListTile(
+                    title: Text('Add to Additional list'),
+                    activeColor: Colors.deepOrange,
+                    checkColor: Colors.white,
+                    value: Provider.of<RandomStates>(context).isAdditional,
+                    onChanged: (bool value) {
+                      Provider.of<RandomStates>(context, listen: false)
+                          .additionalChoose(value);
                     },
                   ),
                 ),
@@ -117,6 +130,11 @@ class AddMeal extends StatelessWidget {
                   textColor: CupertinoColors.white,
                   press: () {
                     if (_formKey.currentState.validate()) {
+                      print(
+                          'OFFER ${Provider.of<RandomStates>(context, listen: false).isOffer}');
+                      print(
+                          'OFFER ${Provider.of<RandomStates>(context, listen: false).isAdditional}');
+
                       FireStoreService().addMeal(
                         mealImage: url,
                         mealName: mealName,
@@ -128,7 +146,11 @@ class AddMeal extends StatelessWidget {
                         isOffers:
                             Provider.of<RandomStates>(context, listen: false)
                                 .isOffer,
+                        isAdditional:
+                            Provider.of<RandomStates>(context, listen: false)
+                                .isAdditional,
                       );
+
                       Navigator.push(context,
                           MaterialPageRoute(builder: (context) => HomePage()));
                     }

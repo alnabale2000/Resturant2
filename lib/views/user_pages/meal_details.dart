@@ -17,32 +17,10 @@ class MealDetails extends StatefulWidget {
 
 class _MealDetailsState extends State<MealDetails> {
   int counter = 1;
-  // double prices = 0.0;
-  // double price;
-
-  //
-  // method() {
-  //   setState(() {
-  //     price = _meal.mealPrice;
-  //     prices = _meal.mealPrice;
-  //   });
-  // }
-
-  // String ChooseString;
-  // // List listItem = [
-  // //   "Item1",
-  // //   "Item2",
-  // //   "Item3",
-  // //   "Item4",
-  // //   "Item5",
-  // //   "Item6",
-  // // ];
 
   plus() {
     setState(() {
       counter = counter + 1;
-
-      //    prices = numb * price;
     });
   }
 
@@ -50,8 +28,6 @@ class _MealDetailsState extends State<MealDetails> {
     if (counter > 1) {
       setState(() {
         counter = counter - 1;
-
-//        prices = numb * price;
       });
     } else
       counter = 1;
@@ -77,16 +53,27 @@ class _MealDetailsState extends State<MealDetails> {
         child: Container(
           child: Column(
             children: [
-              Container(
-                height: 260,
-                width: double.infinity,
-                child: Image(
-                  fit: BoxFit.cover,
-                  image: NetworkImage(
-                    _meal.mealImage,
-                  ),
-                ),
-              ),
+              _meal.mealImage == 'No image'
+                  ? Container(
+                      width: double.infinity,
+                      height: 260,
+                      decoration: BoxDecoration(
+                        color: Colors.grey[200],
+                      ),
+                      child: Center(
+                        child: Icon(Icons.image_not_supported_rounded),
+                      ),
+                    )
+                  : Container(
+                      height: 260,
+                      width: double.infinity,
+                      child: Image(
+                        fit: BoxFit.cover,
+                        image: NetworkImage(
+                          _meal.mealImage,
+                        ),
+                      ),
+                    ),
 
               Center(
                 child: Container(
@@ -257,8 +244,11 @@ class _MealDetailsState extends State<MealDetails> {
       floatingActionButton: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 2),
         child: FlipCard(
-          direction: FlipDirection.VERTICAL, // default
-
+          direction: FlipDirection.VERTICAL,
+          speed: 1500,
+          onFlipDone: (bool val) {
+            val ? print('what??') : Navigator.pop(context);
+          },
           key: cardKey,
           front: Container(
             width: double.infinity,

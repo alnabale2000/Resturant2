@@ -13,6 +13,7 @@ class MealList extends StatelessWidget {
     final meals = Provider.of<List<Meal>>(context);
     return ListView.builder(
       shrinkWrap: true,
+      physics: BouncingScrollPhysics(),
       itemCount: meals?.length ?? 0,
       itemBuilder: (context, index) {
         return MealCard(
@@ -23,47 +24,10 @@ class MealList extends StatelessWidget {
   }
 }
 
-class MealCard extends StatefulWidget {
+class MealCard extends StatelessWidget {
   final Meal meal;
 
   MealCard({this.meal});
-
-  @override
-  _MealCardState createState() => _MealCardState();
-}
-
-class _MealCardState extends State<MealCard> {
-  final FirebaseAuth _auth = FirebaseAuth.instance;
-
-  User logedInUser;
-
-  String uid;
-
-  String isAdmin = '';
-
-  void adminCheck() async {
-    try {
-      final user = _auth.currentUser;
-
-      if (user != null) logedInUser = user;
-
-      uid = logedInUser.uid;
-
-      var userData =
-          await FirebaseFirestore.instance.collection('users').doc(uid).get();
-      setState(() {
-        isAdmin = userData.data()['admin'];
-      });
-    } catch (e) {
-      print('failed');
-    }
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    adminCheck();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -82,7 +46,7 @@ class _MealCardState extends State<MealCard> {
                     shadowColor: Colors.deepOrange,
                     child: Row(
                       children: [
-                        widget.meal.mealImage == 'No image'
+                        meal.mealImage == 'No image'
                             ? Container(
                                 width: 180,
                                 height: 130,
@@ -108,7 +72,7 @@ class _MealCardState extends State<MealCard> {
                                   ),
                                   child: Image(
                                     fit: BoxFit.cover,
-                                    image: NetworkImage(widget.meal.mealImage),
+                                    image: NetworkImage(meal.mealImage),
                                   ),
                                 ),
                               ),
@@ -118,7 +82,7 @@ class _MealCardState extends State<MealCard> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                '${widget.meal.mealName}',
+                                '${meal.mealName}',
                                 maxLines: 2,
                                 softWrap: false,
                                 overflow: TextOverflow.fade,
@@ -130,7 +94,7 @@ class _MealCardState extends State<MealCard> {
                               ),
                               SizedBox(height: 20),
                               Text(
-                                '${widget.meal.mealPrice} JD ',
+                                '${meal.mealPrice} JD ',
                                 style: TextStyle(
                                     color: Colors.deepOrange,
                                     fontSize: 22,
@@ -148,7 +112,7 @@ class _MealCardState extends State<MealCard> {
                                 ),
                                 onPressed: () {
                                   FireStoreService().deleteSingleMealDocument(
-                                    mealName: widget.meal.mealName,
+                                    mealName: meal.mealName,
                                     collectionName: Provider.of<String>(context,
                                         listen: false),
                                   );
@@ -168,7 +132,7 @@ class _MealCardState extends State<MealCard> {
             context,
             MaterialPageRoute(
               builder: (context) => MealDetails(
-                meal: widget.meal,
+                meal: meal,
               ),
             ),
           );

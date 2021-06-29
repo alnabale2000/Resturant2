@@ -3,6 +3,8 @@ import 'package:provider/provider.dart';
 import 'package:resturant/common_components/loading.dart';
 import 'package:resturant/firebase/firestore.dart';
 import 'package:resturant/models/cart_meal.dart';
+import 'package:resturant/models/meal.dart';
+import 'package:resturant/views/user_pages/meal_details.dart';
 
 import '../constant.dart';
 import '../random_states.dart';
@@ -11,6 +13,8 @@ class CartList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final cartMeals = Provider.of<List<CartMeal>>(context);
+    final cartAdditionalMeals = Provider.of<List<Meal>>(context);
+    // print('IN CART LIST PAGE ${cartAdditionalMeals?.length ?? '556'}');
     return cartMeals == null
         ? Center(child: Loading())
         : cartMeals.isEmpty
@@ -26,11 +30,12 @@ class CartList extends StatelessWidget {
               )
             : SingleChildScrollView(
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.min,
+                  // mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     ListView.builder(
-                      physics: NeverScrollableScrollPhysics(),
                       shrinkWrap: true,
+                      physics: NeverScrollableScrollPhysics(),
                       itemCount: cartMeals?.length ?? 0,
                       itemBuilder: (context, index) {
                         return CartCard(
@@ -38,10 +43,95 @@ class CartList extends StatelessWidget {
                         );
                       },
                     ),
-                    SizedBox(height: 100)
+                    SizedBox(height: 30),
+                    SizedBox(
+                      height: 200,
+                      child: ListView.builder(
+                        physics: BouncingScrollPhysics(),
+                        shrinkWrap: true,
+                        scrollDirection: Axis.horizontal,
+                        itemCount: cartAdditionalMeals?.length ?? 0,
+                        itemBuilder: (context, index) {
+                          return CartAdditionalCard(
+                            cartAdditionalMeal: cartAdditionalMeals[index],
+                          );
+                        },
+                      ),
+                    ),
+                    SizedBox(height: 120)
                   ],
                 ),
               );
+  }
+}
+
+class CartAdditionalCard extends StatelessWidget {
+  final Meal cartAdditionalMeal;
+
+  CartAdditionalCard({this.cartAdditionalMeal});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: GestureDetector(
+        child: FittedBox(
+          child: Container(
+            decoration: BoxDecoration(
+                color: Colors.white,
+                border: Border.all(width: 1, color: Colors.green),
+                boxShadow: [BoxShadow()]),
+            width: 150,
+            child: Column(
+              children: [
+                SizedBox(
+                  child: cartAdditionalMeal.mealImage == 'No image'
+                      ? Container(
+                          width: 150,
+                          height: 120,
+                          decoration: BoxDecoration(
+                            color: Colors.grey[200],
+                          ),
+                          child: Center(
+                            child: Icon(Icons.image_not_supported_rounded),
+                          ),
+                        )
+                      : Image.network(
+                          cartAdditionalMeal.mealImage,
+                          fit: BoxFit.cover,
+                        ),
+                  height: 120,
+                  width: 150,
+                ),
+                Text(
+                  cartAdditionalMeal.mealName,
+                  style: TextStyle(
+                      color: Colors.deepOrange,
+                      fontSize: 17.5,
+                      fontWeight: FontWeight.bold),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(4.0),
+                  child: Text(
+                    '${cartAdditionalMeal.mealPrice}',
+                    style:
+                        TextStyle(color: Colors.deepOrange[400], fontSize: 16),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+        onTap: () {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => MealDetails(
+                        meal: cartAdditionalMeal,
+                      )));
+        },
+      ),
+    );
   }
 }
 
@@ -54,8 +144,6 @@ class CartCard extends StatelessWidget {
   Widget build(BuildContext context) {
     String uid =
         Provider.of<RandomStates>(context, listen: false).getCurrentUser();
-    print('CART CARD TEST');
-
     return Container(
       child: SingleChildScrollView(
         child: Column(
@@ -79,15 +167,27 @@ class CartCard extends StatelessWidget {
                               padding: const EdgeInsets.only(top: 8.0),
                               child: Row(
                                 children: [
-                                  Container(
-                                    height: 100,
-                                    width: 100,
-                                    child: CircleAvatar(
-                                      radius: 20,
-                                      backgroundImage:
-                                          NetworkImage(cartMeal.mealImage),
-                                    ),
-                                  ),
+                                  cartMeal.mealImage == 'No image'
+                                      ? Container(
+                                          width: 100,
+                                          height: 100,
+                                          child: CircleAvatar(
+                                            backgroundColor: Colors.grey[200],
+                                            child: Center(
+                                              child: Icon(Icons
+                                                  .image_not_supported_rounded),
+                                            ),
+                                          ),
+                                        )
+                                      : Container(
+                                          height: 100,
+                                          width: 100,
+                                          child: CircleAvatar(
+                                            radius: 20,
+                                            backgroundImage: NetworkImage(
+                                                cartMeal.mealImage),
+                                          ),
+                                        ),
                                   Column(
                                     children: [
                                       Container(
@@ -233,157 +333,3 @@ class CartCard extends StatelessWidget {
     );
   }
 }
-
-// class CartCard extends StatelessWidget {
-//   final CartMeal cartMeal;
-//
-//   CartCard({this.cartMeal});
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     print(cartMeal.mealName);
-//     return Container(
-//       child: Column(
-//         children: [
-//           Text(cartMeal.mealName),
-//           Text('${cartMeal.mealPrice} JD'),
-//           Image.network(cartMeal.mealImage),
-//           Card(
-//               child: Row(
-//                 children: [
-//                   Padding(
-//                     padding: const EdgeInsets.only(top:18.0,left: 12),
-//                     child: FittedBox(
-//                       child: Container(
-//                         height: 130,
-//                         width: 380,
-//                         child: Material(
-//                           borderRadius: (BorderRadius.circular(24.0)),
-//                           elevation: 32.5,
-//                           shadowColor: Colors.red,
-//                           child: Row(
-//                             children: [
-//                               Container(
-//                                 height: 100,
-//                                 width: 100,
-//                                 child: CircleAvatar(
-//                                   radius: 20,
-//                                   backgroundImage:NetworkImage(
-//                                       "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTw5ytdZgaHr5ovnHQh9FKGit95zuXSVSmprAYbyzFJ7-JzaOMEpqhnIMGQw3Ib1cbOAJs&usqp=CAU"),
-//
-//                                 ),
-//                               ),
-//                               Column(
-//
-//                                 children: [
-//
-//                                   // Text("Food Name: ",style: Style1,),
-//                                   Align(
-//                                     alignment: Alignment.topLeft,
-//                                     child: Container(
-//                                       child: Text(
-//                                         "burger",
-//                                         style:Style1,
-//
-//                                       ),
-//                                     ),
-//                                   ),
-//                                   Padding(
-//                                     padding: const EdgeInsets.only(right: 50,left: 0.0,top: 12),
-//                                     child: Row(
-//
-//                                       children: [
-//                                         Text("Price: ",style: Style1,),
-//                                         Text("${2.2}JD",
-//                                           style:Style1,
-//                                         ),
-//
-//                                       ],
-//                                     ),
-//                                   ),
-//                                   Padding(padding: EdgeInsets.only(left: 20),
-//                                     child: Row(
-//                                       children: [
-//                                         Container(
-//                                           decoration: BoxDecoration(
-//                                               borderRadius: (BorderRadius.circular(23)),
-//                                               color: Colors.deepOrange),
-//                                           child: IconButton(
-//                                               icon: Icon(Icons.add),
-//                                               onPressed: () => plus()),
-//                                         ),
-//                                         Padding(
-//                                           padding: const EdgeInsets.only(left:18.0),
-//                                           child: Container(
-//
-//                                               child:Text("${numb}",style: Style1)),
-//                                         ),
-//                                         Padding(
-//                                           padding: const EdgeInsets.only(left :18.0),
-//                                           child: Container(
-//                                             decoration: BoxDecoration(
-//                                                 borderRadius: (BorderRadius.circular(23)),
-//                                                 color: Colors.deepOrange),
-//                                             child: IconButton(
-//                                                 icon: Icon(Icons.minimize),
-//                                                 onPressed: () => minmize()),
-//                                           ),
-//                                         ),
-//
-//                                       ],
-//                                     ),),
-//                                 ],
-//                               ),
-//                             ],
-//                           ),
-//                         ),
-//                       ),
-//                     ),
-//                   ),
-//                 ],
-//               ))
-//         ],
-//       ),
-//     );
-//   }
-// }
-// Positioned(
-//   width: 120,
-//
-//   child:   Row(
-//     children: [
-//       Container(
-//         width: 32,
-//         child: IconButton(
-//                   icon: Icon(Icons.add),
-//                   onPressed: () {
-//                     plus(cartMeal.count);
-//                   }),
-//       ),
-//
-//   Padding(
-//     padding: const EdgeInsets.only(bottom:8.0,),
-//     child: Container(
-//
-//       margin: EdgeInsets.only(left: 3),
-//           height:37,width: 25,
-//
-//           decoration: BoxDecoration(
-//            color: Colors.white, borderRadius: BorderRadius.circular(22)
-//
-//           ),
-//           child: Center(child: Text("${cartMeal.count}",style: Style1,)),
-//         ),
-//   ),
-//   Container(
-//     // margin: EdgeInsets.only(bottom: 3),//
-//     child: IconButton(
-//             icon: Icon(Icons.minimize),
-//             onPressed: (){
-//               print("Minimize");
-//         }),
-//   ),
-//
-//     ],
-//   ),
-// )

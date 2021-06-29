@@ -21,6 +21,7 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         StreamProvider.value(value: FireStoreService().categories),
+        StreamProvider.value(value: FireStoreService().additionalMeals),
         ChangeNotifierProvider(create: (_) => RandomStates()),
       ],
       child: MaterialApp(

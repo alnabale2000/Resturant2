@@ -8,6 +8,7 @@ class RandomStates extends ChangeNotifier {
   // String isAdmin = 'false';
 
   bool isOffer = false;
+  bool isAdditional = false;
   bool loading = false;
   bool loading2 = true;
 
@@ -18,8 +19,13 @@ class RandomStates extends ChangeNotifier {
     notifyListeners();
   }
 
-  void offerChose(bool value) {
+  void offerChoose(bool value) {
     isOffer = value;
+    notifyListeners();
+  }
+
+  void additionalChoose(bool value) {
+    isAdditional = value;
     notifyListeners();
   }
 
@@ -53,20 +59,4 @@ class RandomStates extends ChangeNotifier {
     }
     return 'No User';
   }
-
-  // void adminCheck() async {
-  //   try {
-  //     final String uid = getCurrentUser();
-  //     var userData =
-  //         await FirebaseFirestore.instance.collection('users').doc(uid).get();
-  //     isAdmin = userData.data()['admin'];
-  //     loading2 = false;
-  //     print('adminChick');
-  //     notifyListeners();
-  //   } catch (e) {
-  //     print('failed');
-  //     loading2 = false;
-  //     notifyListeners();
-  //   }
-  // }
 }

@@ -26,6 +26,9 @@ class FireStoreService {
   final CollectionReference usersCollection =
       FirebaseFirestore.instance.collection('users');
 
+  final CollectionReference additionalMealsCollection =
+      FirebaseFirestore.instance.collection('additional');
+
   ///
   // void setOfferCollection() {
   //   categoriesCollection.doc('Offers').update({'category_name': 'Offers'});
@@ -46,19 +49,22 @@ class FireStoreService {
     String categoryName,
     String mealDetails,
     bool isOffers = false,
+    bool isAdditional = false,
   }) {
-    categoriesCollection
-        .doc(categoryName)
-        .collection('meals')
-        .doc(mealName)
-        .set(
-      {
-        'meal_name': mealName,
-        'meal_image': mealImage,
-        'meal_price': mealPrice,
-        'meal_details': mealDetails,
-      },
-    );
+    categoryName == null
+        ? null
+        : categoriesCollection
+            .doc(categoryName)
+            .collection('meals')
+            .doc(mealName)
+            .set(
+            {
+              'meal_name': mealName,
+              'meal_image': mealImage,
+              'meal_price': mealPrice,
+              'meal_details': mealDetails,
+            },
+          );
     isOffers
         ? categoriesCollection
             .doc('Offers')
@@ -72,6 +78,14 @@ class FireStoreService {
               'meal_details': mealDetails,
             },
           )
+        : null;
+    isAdditional
+        ? additionalMealsCollection.doc(mealName).set({
+            'meal_name': mealName,
+            'meal_image': mealImage,
+            'meal_price': mealPrice,
+            'meal_details': mealDetails,
+          })
         : null;
   }
 
@@ -117,6 +131,14 @@ class FireStoreService {
 
   Stream<List<Order>> get orders {
     return ordersCollection.snapshots().map(_orderList);
+  }
+
+  List<Meal> _additionalList(QuerySnapshot snapshot) {
+    return snapshot.docs.map((doc) => Meal.fromFireStore(doc)).toList();
+  }
+
+  Stream<List<Meal>> get additionalMeals {
+    return additionalMealsCollection.snapshots().map(_additionalList);
   }
 
   /// END GET ORDER

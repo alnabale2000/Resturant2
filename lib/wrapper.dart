@@ -53,7 +53,7 @@ class _WrapperState extends State<Wrapper> {
   void initState() {
     super.initState();
     adminCheck();
-    createAccount();
+    uid == null ? createAccount() : null;
   }
 
   @override
